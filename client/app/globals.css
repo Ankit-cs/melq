@@ -1,0 +1,219 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* =========================
+   THEME TOKENS
+   Palette:
+   - Cream: #F3EEE3
+   - Ink Black: #111111
+   - Burnt Orange: #D9541E
+========================= */
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-serif: var(--font-serif);
+  --font-heading: var(--font-sans);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-cream: #F3EEE3;
+  --color-ink: #111111;
+  --color-burnt-orange: #D9541E;
+
+  --radius: 0.8rem;
+}
+
+/* ========================================================
+   ROOT THEME (Editorial Aesthetic: Cream / Ink / Burnt Orange)
+======================================================== */
+
+:root {
+  --background: #F3EEE3;
+  --foreground: #111111;
+
+  --card: #FAF7F2;
+  --card-foreground: #111111;
+
+  --popover: #FAF7F2;
+  --popover-foreground: #111111;
+
+  --primary: #D9541E;
+  --primary-foreground: #FFFFFF;
+
+  --secondary: #E8E0D2;
+  --secondary-foreground: #111111;
+
+  --muted: #ECE4D6;
+  --muted-foreground: #615A52;
+
+  --accent: #E5DCCE;
+  --accent-foreground: #111111;
+
+  --destructive: #C53030;
+  --destructive-foreground: #FFFFFF;
+
+  --border: #DED5C5;
+  --input: #DED5C5;
+  --ring: #D9541E;
+
+  --sidebar: #EBE3D4;
+  --sidebar-foreground: #111111;
+  --sidebar-primary: #D9541E;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #DFD6C5;
+  --sidebar-accent-foreground: #111111;
+  --sidebar-border: #D7CDBC;
+  --sidebar-ring: #D9541E;
+}
+
+.dark {
+  --background: #111111;
+  --foreground: #F3EEE3;
+
+  --card: #191919;
+  --card-foreground: #F3EEE3;
+
+  --popover: #1A1A1A;
+  --popover-foreground: #F3EEE3;
+
+  --primary: #D9541E;
+  --primary-foreground: #FFFFFF;
+
+  --secondary: #222222;
+  --secondary-foreground: #F3EEE3;
+
+  --muted: #242424;
+  --muted-foreground: #A8A29E;
+
+  --accent: #262626;
+  --accent-foreground: #F3EEE3;
+
+  --destructive: #E53E3E;
+  --destructive-foreground: #FFFFFF;
+
+  --border: #282828;
+  --input: #282828;
+  --ring: #D9541E;
+
+  --sidebar: #141414;
+  --sidebar-foreground: #F3EEE3;
+  --sidebar-primary: #D9541E;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #202020;
+  --sidebar-accent-foreground: #F3EEE3;
+  --sidebar-border: #262626;
+  --sidebar-ring: #D9541E;
+}
+
+/* =========================
+   BASE STYLES
+========================= */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans antialiased;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    letter-spacing: -0.01em;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-semibold tracking-tight;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D0C5B2;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B8AC96;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* =========================
+   SELECTION
+========================= */
+
+::selection {
+  background: #D9541E;
+  color: #FFFFFF;
+}
+
+/* ========================= 
+   SCREEN GATE 
+========================= */
+
+#unsupported-root {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  #app-root {
+    display: none;
+  }
+  #unsupported-root {
+    display: block;
+  }
+}
