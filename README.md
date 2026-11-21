@@ -1,214 +1,255 @@
-![Dashboard](./preview.png)
+![Quelm Banner](./preview.png)
 
 # Quelm
 
-A distributed multi-agent workflow platform where AI agents collaborate asynchronously to execute complex workflows at scale. Built with event-driven architecture, message queues, real-time orchestration, and a visual workflow builder.
+> **Framework-Independent AI Agent Benchmarking, Chaos-Testing & Execution Platform**  
+> *Built for Global AI Hackathon — Problem Statement 02: "Build a Benchmarking Platform for AI Agents, Not Just Models"*
 
-> **Status:** Active Development &nbsp;|&nbsp; **Stack:** TypeScript · Next.js · Express · BullMQ · PostgreSQL · Redis · Groq · Vitest
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Ankit--cs%2Fmelq-111111?style=flat&logo=github)](https://github.com/Ankit-cs/melq)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16%20(React%2019)-black?style=flat&logo=next.js)](https://nextjs.org/)
+[![Express](https://img.shields.io/badge/Express-Backend%20API-grey?style=flat&logo=express)](https://expressjs.com/)
+[![Gemini](https://img.shields.io/badge/Gemini-2.0%20Flash-orange?style=flat&logo=google)](https://deepmind.google/technologies/gemini/)
+[![Prisma](https://img.shields.io/badge/Prisma-PostgreSQL-teal?style=flat&logo=prisma)](https://www.prisma.io/)
+[![Redis](https://img.shields.io/badge/Redis-BullMQ%20Queue-red?style=flat&logo=redis)](https://redis.io/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=flat&logo=tailwindcss)](https://tailwindcss.com/)
 
 ---
 
 ## Table of Contents
 
-- [Overview](#overview)
-- [Features](#features)
-- [Architecture](#architecture)
+- [Overview & The Problem](#overview--the-problem)
+- [Key Features](#key-features)
+- [System Architecture](#system-architecture)
+- [Framework-Independent Benchmarking](#framework-independent-benchmarking)
+- [Chaos Injection & Failure Testing](#chaos-injection--failure-testing)
+- [Repeatability & Statistical Evaluation](#repeatability--statistical-evaluation)
+- [Inspection & Comparison Interface](#inspection--comparison-interface)
+- [Global Agent Leaderboard](#global-agent-leaderboard)
+- [Visual Workflow Builder](#visual-workflow-builder)
 - [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
+- [Repository Structure](#project-structure)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Environment Variables](#environment-variables)
+  - [Docker Setup](#docker-setup)
+  - [Database Migration](#database-migration)
   - [Running Locally](#running-locally)
 - [API Reference](#api-reference)
-  - [Authentication](#authentication)
-  - [Workflows](#workflows)
-  - [Runs](#runs)
-  - [Agents](#agents)
-- [Agent Types](#agent-types)
-- [Workflow Definition Schema](#workflow-definition-schema)
-- [How It Works](#how-it-works)
-  - [Creating a Workflow](#creating-a-workflow)
-  - [Triggering a Run](#triggering-a-run)
-  - [Live Run Monitor](#live-run-monitor)
-  - [Retry and Failure Handling](#retry-and-failure-handling)
-- [Deployment](#deployment)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
+- [Design System & Palette](#design-system--palette)
 
 ---
 
-## Overview
+## Overview & The Problem
 
-Quelm is a general-purpose distributed workflow platform where users visually compose workflows by connecting AI agents on a canvas, trigger runs with a JSON input payload, and watch them execute live in real time.
+Traditional AI benchmarks (MMLU, HumanEval, GSM8K) measure raw model intelligence, but they **fail to evaluate how an autonomous AI agent performs in production**.
 
-Under the hood, tasks flow through BullMQ queues on Redis, workers process them independently with automatic retries and exponential backoff, and an event-driven orchestrator dispatches downstream tasks as dependencies complete. Every execution is fully persisted in PostgreSQL with a complete audit trail.
+Two agents utilizing the exact same underlying LLM (e.g. Gemini 2.0 Flash or GPT-4o) produce drastically different real-world results:
+- One agent may complete a complex multi-step task in **3 tool calls, 400 tokens, and 2 seconds**.
+- Another agent using the same model may burn **8,000 tokens in an infinite loop, hallucinate fake citations, and crash when an external tool returns an HTTP 500 error**.
 
----
-
-## Features
-
-- **Visual Workflow Builder** — drag and drop agent nodes onto a canvas, connect them with edges, configure each node with prompts, URLs, or transformation logic
-- **Live Run Monitor** — watch a workflow execute in real time with per-node status updates via Server-Sent Events
-- **Distributed Workers** — each agent type runs as an independent worker process, scales horizontally without code changes
-- **Dependency Resolution** — parallel execution, fan-out, and sequential chains all handled automatically based on the graph structure
-- **Retry Logic** — exponential backoff with configurable max attempts per task, dead-letter handling for permanently failed jobs
-- **Critical Task Control** — mark any node as critical to fail the entire workflow on failure, or non-critical to skip and continue
-- **Agent Heartbeat** — every worker reports its liveness every 30 seconds, the dashboard shows real-time agent health
-- **Modular Agent System** — extend `BaseAgent` to add any new agent type without touching the orchestrator
-- **Structured Observability** — structured JSON logs in production, per-request logging, full task input/output history in the database
+**Quelm is a framework-independent benchmarking and chaos-testing platform** that evaluates entire AI agents across identical standardized tasks under normal and simulated failure conditions.
 
 ---
 
-## Architecture
+## Key Features
+
+- **Framework Independence** — Benchmark agents written in LangChain, CrewAI, AutoGen, LlamaIndex, or raw HTTP webhooks without rewriting them.
+- **Repeatable Multi-Run Evaluations** — Execute tasks across 1x to 5x iterations to detect stochastic variance, non-deterministic traps, and true reliability.
+- **Controlled Chaos Engine** — Inject tool failures (HTTP 500), rate limit throttling (HTTP 429), and misleading contextual instructions to measure resilience.
+- **Comprehensive Scorecard** — Track Task Success Rate, Execution Steps, Tool Invocations, Token Usage, Cost ($ USD), Latency, and Resilience Score.
+- **LLM-as-a-Judge Evaluation** — Automated multi-dimensional scoring powered by Gemini 2.0 Flash with factual checks, penalty audits, and qualitative critiques.
+- **Head-to-Head Comparison Matrix** — Compare 2 to 5 agents side-by-side with granular execution trace diff timelines.
+- **Global Agent Leaderboard** — Ranked standings featuring Gold, Silver, and Bronze medals, resilience scores, average latency, and cost per task.
+- **Distributed Multi-Agent Workflows** — Visual React Flow canvas to compose, test, and monitor distributed agent graphs with BullMQ and Server-Sent Events.
+
+---
+
+## System Architecture
 
 ```mermaid
 flowchart TB
-    subgraph Client["Client (Next.js + Vercel)"]
-        WB["Workflow Builder\nReact Flow canvas"]
-        RM["Run Monitor\nLive SSE updates"]
-        DB["Dashboard\nMetrics & agents"]
+    subgraph Client["Next.js 16 Frontend (Warm Editorial Design)"]
+        BA["Benchmark Arena\n/benchmark"]
+        CD["Trace Diff & Matrix\n/benchmark/:id"]
+        LB["Agent Leaderboard\n/leaderboard"]
+        WB["Workflow Builder\n/builder/:id"]
     end
 
-    subgraph API["REST API (Express)"]
-        WR["/api/workflows"]
-        RR["/api/runs"]
-        AR["/api/agents"]
-        SSE["/api/runs/:id/stream\nSSE endpoint"]
+    subgraph API["Express REST API (Port 8000)"]
+        BR["/api/benchmark/*"]
+        WF["/api/workflows"]
+        RN["/api/runs"]
     end
 
-    subgraph Orchestrator["Orchestrator"]
-        OC["Workflow engine\nDependency resolver"]
-        QE["QueueEvents\nCompletion listener"]
-        RE["RunEmitter\nEvent broadcast"]
+    subgraph BenchmarkSystem["Benchmark Engine"]
+        Runner["Benchmark Runner\n(1x-5x Repeated Runs)"]
+        Chaos["Chaos Injection Engine\n500s · 429s · Misleading Context"]
+        MockTools["Deterministic Sandboxed Tools\nSearch · DB · Math · API"]
+        Judge["Automated Evaluator\nRule Checks + LLM-as-a-Judge"]
     end
 
-    subgraph Queues["BullMQ Queues (Redis)"]
-        LQ["LLM_AGENT"]
-        HQ["HTTP_AGENT"]
-        TQ["TRANSFORM_AGENT"]
-        EQ["EXTRACTION_AGENT"]
-        NQ["NOTIFICATION_AGENT"]
-        SQ["STORAGE_AGENT"]
+    subgraph AgentRuntime["Framework-Independent Agent Abstraction"]
+        ReactAgent["Resilient ReAct Agent\n(Gemini 2.0 Flash)"]
+        NaiveAgent["Naive Baseline Agent\n(Direct LLM)"]
+        PipeAgent["Decomposed Pipeline Agent\n(Planner + Executor)"]
+        WebhookAgent["External Webhook Agent\n(LangChain / CrewAI / AutoGen)"]
     end
 
-    subgraph Workers["Agent Workers"]
-        LA["LLM Agent\nGroq API"]
-        HA["HTTP Agent"]
-        TA["Transform Agent"]
+    subgraph Data["Persistence & Queues"]
+        PG[("PostgreSQL 16\nBenchmark & Execution Traces")]
+        RD[("Redis 7\nBullMQ Queues")]
     end
 
-    subgraph Storage["Storage"]
-        PG[("PostgreSQL\nWorkflows · Runs · Tasks · Agents")]
-        RD[("Redis\nJob queues · State")]
-    end
-
-    WB -->|"POST /api/workflows"| WR
-    WB -->|"POST /api/workflows/:id/run"| WR
-    RM -->|"GET /api/runs/:id/stream"| SSE
-    DB -->|"GET /api/agents"| AR
-    DB -->|"GET /api/runs"| RR
-
-    WR --> OC
-    OC -->|"Dispatch first tasks"| LQ
-    OC -->|"Dispatch first tasks"| HQ
-    QE -->|"completed / failed"| OC
-    OC -->|"Dispatch next tasks"| LQ
-    OC --> RE
-    RE -->|"Push status event"| SSE
-
-    LQ -->|"Pull job"| LA
-    HQ -->|"Pull job"| HA
-    TQ -->|"Pull job"| TA
-
-    LA -->|"Update task"| PG
-    HA -->|"Update task"| PG
-    TA -->|"Update task"| PG
-
-    OC -->|"Update run state"| PG
-    API --> PG
-    Queues --- RD
+    Client --> API
+    API --> BenchmarkSystem
+    BenchmarkSystem --> AgentRuntime
+    BenchmarkSystem --> Chaos
+    BenchmarkSystem --> MockTools
+    BenchmarkSystem --> Judge
+    API --> Data
 ```
+
+---
+
+## Framework-Independent Benchmarking
+
+Quelm supports any agent framework out of the box through a standardized JSON execution protocol:
+
+### Reference In-Memory Agents:
+1. **Resilient ReAct Agent (`ResilientReactAgent`)**:
+   Hardened Gemini 2.0 Flash agent with exponential backoff, error retries, tool fallbacks, and adversarial trap resistance.
+2. **Naive Direct Agent (`NaiveDirectAgent`)**:
+   Standard unhardened baseline agent that crashes or hallucinates under chaos.
+3. **Decomposed Pipeline Agent (`DecomposedPipelineAgent`)**:
+   Three-stage planner, executor, and synthesizer.
+
+### External Agents (LangChain, CrewAI, AutoGen, Custom):
+Register any external agent webhook in the Leaderboard. Quelm dispatches the standardized payload:
+
+```json
+POST /your-agent-endpoint
+Content-Type: application/json
+
+{
+  "taskId": "task_research_01",
+  "taskTitle": "Comparative Market Analysis",
+  "prompt": "Analyze the top 3 AI agent frameworks in 2026...",
+  "availableTools": ["web_search", "database_lookup", "calculator"]
+}
+```
+
+Your agent simply returns its execution summary:
+```json
+{
+  "finalAnswer": "Based on 2026 data...",
+  "totalTokens": 1250,
+  "promptTokens": 950,
+  "completionTokens": 300,
+  "stepsCount": 4,
+  "toolCallsCount": 2,
+  "chaosHandled": true
+}
+```
+
+---
+
+## Chaos Injection & Failure Testing
+
+Agents in production encounter unexpected failures. Quelm includes a native **Chaos Engine** to stress-test agent behavior:
+
+| Chaos Scenario | Simulated Event | Expected Resilient Behavior |
+|---|---|---|
+| **`TOOL_ERROR_500`** | Mock tool throws internal server error | Agent catches error, applies backoff, falls back to alternate tool, or reports degraded state without hallucinating. |
+| **`RATE_LIMIT_429`** | LLM inference returns quota exhausted | Agent catches 429, waits for the retry window, and recovers cleanly. |
+| **`MISLEADING_CONTEXT`** | Injects false premises and contradictory advice | Agent validates premise against factual tools and rejects false guidance. |
+
+---
+
+## Repeatability & Statistical Evaluation
+
+Single-run evaluations are unreliable because LLM temperature introduces randomness.
+
+Quelm executes benchmarks across **1x to 5x iterations**:
+- **Success Rate (`%`)**: Percentage of iterations where the task succeeded.
+- **Resilience Score (`%`)**: Ratio of injected chaos scenarios recovered from cleanly.
+- **Mean Score (`0-100`)**: Combined score across factual completeness, efficiency, and LLM Judge evaluation.
+- **Latency & Variance**: Mean wall-clock time and standard deviation across runs.
+- **Cost & Token Consumption**: Prompt and completion token tracking with per-dollar costing ($ USD).
+
+---
+
+## Inspection & Comparison Interface
+
+The `/benchmark/[id]` comparison view allows developers to diff agent runs side-by-side:
+- **Head-to-Head Cards** comparing score, tokens, cost, and resilience.
+- **Qualitative Critique Panel** showing LLM-as-a-judge feedback and penalty justifications.
+- **Execution Trace Diff Timeline** showing the chronological step-by-step breakdown:
+  - `THOUGHT`: Agent's inner reasoning chain
+  - `TOOL_CALL`: Tool parameters and execution duration
+  - `TOOL_RESULT`: Data returned from tools
+  - `CHAOS_INJECTED`: **Highlighted in red**, displaying exact injected failures
+  - `FINAL_ANSWER`: Final output delivered
+
+---
+
+## Pre-Configured Benchmark Suites
+
+1. **Deep Research & Multi-Hop Reasoning**
+   - Comparative analysis of AI agent frameworks in 2026
+   - Multi-hop financial audit & transaction reconciliation
+2. **Autonomous Customer Operations**
+   - High-value refund dispute resolution
+   - SLA breach diagnostic investigation
+3. **Coding & Bug Fixing**
+   - Concurrency deadlock resolution in Node.js worker pools
+   - PostgreSQL query optimization for high-throughput tables
 
 ---
 
 ## Tech Stack
 
-| Layer            | Technology                     | Purpose                                 |
-| ---------------- | ------------------------------ | --------------------------------------- |
-| Language         | TypeScript                     | End-to-end type safety                  |
-| Package Manager  | pnpm                           | Fast installs, strict workspace support |
-| Frontend         | Next.js + Tailwind + shadcn/ui | Full-stack React, deploys to Vercel     |
-| Workflow Canvas  | React Flow                     | Node-based visual editor                |
-| Backend          | Node.js + Express              | REST API server                         |
-| Queue System     | BullMQ + Redis                 | Task distribution, retries, job state   |
-| Database         | PostgreSQL + Prisma            | Persistent workflow and run state       |
-| AI Provider      | Groq (LLaMA 3.3 70B)           | Fast LLM inference, generous free tier  |
-| Real-time        | Server-Sent Events             | Live run monitor updates                |
-| Containerization | Docker Compose                 | Local Postgres and Redis                |
-| Testing          | Vitest + Supertest             | Unit, integration, and API tests        |
-| Deployment       | Vercel + Render                | Frontend and backend hosting            |
+| Layer | Technologies |
+|---|---|
+| **Frontend** | Next.js 16 (App Router), React 19, Tailwind CSS v4, Lucide React, Canvas Confetti |
+| **Backend API** | Node.js, Express, TypeScript, Zod |
+| **LLM Inference & Judge** | Google Gemini 2.0 Flash (`@google/genai`) |
+| **Database & ORM** | PostgreSQL 16, Prisma ORM 6.2 |
+| **Caching & Queues** | Redis 7, BullMQ |
+| **Testing** | Vitest, Supertest, React Testing Library |
 
 ---
 
 ## Project Structure
 
-```
+```text
 quelm/
-├── client/                         # Next.js frontend
-│   ├── __tests__/                  # Test Suite
-│   ├── app/                        # App router pages
-│   ├── components/                 # React components
-│   ├── hooks/                      # Custom hooks for API calling
-│   ├── lib/                        # Utility methods and types
-│   ├── providers/                  # Context providers
-│   └── package.json
-├── server/                         # Express backend
-│   ├── agents/                     # Agent worker implementations
-│   │   ├── base.agent.ts           # Abstract base class
-│   │   ├── llm.agent.ts            # Groq LLM agent
-│   │   └── registry.ts             # Agent startup registry
-│   ├── __tests__/                  # Test suite
-│   │   ├── api/                    # API integration tests (supertest)
-│   │   ├── helpers/                # Mock factories and app builder
-│   │   ├── orchestrator/           # Orchestrator workflow tests
-│   │   ├── services/               # Service layer unit tests
-│   │   ├── utils/                  # Utility function tests
-│   │   └── setup.ts                # Global mocks and env config
-│   ├── agents/                     # Agent worker implementations
-│   │   ├── base.agent.ts           # Abstract base class
-│   │   ├── llm.agent.ts            # Groq LLM agent
-│   │   └── registry.ts             # Agent startup registry
-│   ├── api/                        # Modular REST API
-│   │   ├── workflow/               # Workflow module
-│   │   ├── run/                    # Run module
-│   │   └── agent/                  # Agent module
-│   ├── config/                     # App configuration
-│   │   ├── index.ts                # Typed env variables
-│   │   ├── logger.config.ts        # Winston logger
-│   │   ├── prisma.config.ts        # Prisma singleton
-│   │   ├── redis.config.ts         # Redis singleton
-│   │   └── groq.config.ts          # Groq client singleton
-│   ├── events/
-│   │   └── run.emitter.ts          # In-process event emitter for SSE
-│   ├── orchestrator/
-│   │   └── index.ts                # Workflow orchestration engine
-│   ├── queue/
-│   │   └── index.ts                # BullMQ queue abstraction
-│   ├── middleware/
-│   │   └── error.middleware.ts     # Global error handler
+├── client/                     # Next.js 16 Web Application
+│   ├── app/
+│   │   ├── (dashboard)/
+│   │   │   ├── benchmark/      # Benchmark Suite Dashboard & Runner
+│   │   │   │   └── [id]/       # Head-to-Head Comparison & Trace Diff
+│   │   │   ├── leaderboard/    # Global Agent Leaderboard
+│   │   │   ├── workflows/      # Multi-Agent Workflow Management
+│   │   │   └── runs/[id]/      # Live Run SSE Monitor
+│   │   ├── (builder)/[id]/     # React Flow Canvas Builder
+│   │   └── page.tsx            # Warm Editorial Landing Page
+│   └── components/landing/     # Hero, Features, Architecture, Navbar
+│
+├── server/                     # Express REST API & Engine
+│   ├── api/
+│   │   └── benchmark/          # Benchmark REST Controller & Routes
+│   ├── engine/
+│   │   ├── benchmark/          # Runner, Suite Seeder, Agent Interfaces
+│   │   │   └── agents/         # ReAct, Naive, Pipeline, Webhook Agents
+│   │   ├── chaos/              # Chaos Engine & Mock Tool Interceptors
+│   │   ├── evaluator/          # Multi-Metric & LLM-as-a-Judge Scorer
+│   │   └── orchestrator/       # Distributed Workflow Dependency Engine
 │   ├── prisma/
-│   │   └── schema.prisma           # Database schema
-│   ├── utils/
-│   │   ├── errors.ts               # Typed API error classes
-│   │   ├── types.ts                # Shared TypeScript types
-│   │   └── template.utils.ts       # Prompt interpolation
-│   └── index.ts                    # Server entry point
-├── docker-compose.yml              # Postgres + Redis
-├── .eslintrc.js                    # Shared ESLint config
-├── .prettierrc                     # Shared Prettier config
-├── tsconfig.base.json              # Base TypeScript config
-└── pnpm-workspace.yaml             # pnpm workspace config
+│   │   └── schema.prisma       # Database Schema (Suites, Runs, Traces)
+│   └── index.ts                # Express Server Bootstrapper
+│
+├── docker-compose.yml          # PostgreSQL 16 & Redis 7 Infrastructure
+└── analyse.txt                 # Comprehensive Architecture Analysis
 ```
 
 ---
@@ -217,514 +258,112 @@ quelm/
 
 ### Prerequisites
 
-- Node.js 20+
-- pnpm 8+
-- Docker Desktop
+- **Node.js** >= 20.x
+- **pnpm** >= 9.x
+- **Docker Desktop** (for PostgreSQL and Redis)
+- **Google Gemini API Key** (`GEMINI_API_KEY`)
 
-### Installation
+---
+
+### Step 1: Clone the Repository
 
 ```bash
-# Clone the repository
 git clone https://github.com/Ankit-cs/melq.git
-cd melq
-
-# Install all dependencies
-pnpm install
+cd melq/quelm
 ```
 
-### Environment Variables
+---
 
-Create the following `.env` files:
+### Step 2: Configure Environment Variables
 
-**Root `.env`** — Docker Compose infrastructure:
-
+Create `.env` inside `server/`:
 ```env
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_DB=agent_platform
-```
-
-**`server/.env`** — Application config:
-
-```env
-# App
 PORT=8000
-
-# Database
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/agent_platform
-
-# Redis
-REDIS_URL=redis://localhost:6379
-
-# Client URL (deployed frontend, for CORS)
+NODE_ENV=development
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/agent_platform?schema=public"
+REDIS_HOST=localhost
+REDIS_PORT=6379
+JWT_SECRET=super_secret_jwt_key_min_32_characters_long_quelm
+GEMINI_API_KEY=your_gemini_api_key_here
 CLIENT_URL=http://localhost:3000
-
-# Groq
-GROQ_API_KEY=your_groq_api_key_here
-
-# JWT
-JWT_SECRET=your_jwt_secret
-JWT_REFRESH_SECRET=your_jwt_refresh_secret
 ```
 
-**`client/.env.local`** — Frontend config:
-
+Create `.env.local` inside `client/`:
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_API_URL=http://localhost:8000/api
 ```
 
-Copy the example files as a starting point:
+---
+
+### Step 3: Start Infrastructure via Docker
 
 ```bash
-cp .env.example .env
-cp server/.env.example server/.env
-cp client/.env.local.example client/.env.local
+docker-compose up -d
 ```
+*This spins up PostgreSQL on port `5432` and Redis on port `6379`.*
 
-Get a free Groq API key at [console.groq.com](https://console.groq.com).
+---
 
-### Running Locally
-
-**1. Start infrastructure:**
-
-```bash
-docker compose up -d
-```
-
-**2. Run database migrations:**
+### Step 4: Apply Database Migrations & Generate Prisma Client
 
 ```bash
 cd server
-pnpm prisma migrate dev
+pnpm prisma db push
+pnpm prisma generate
 ```
 
-**3. Start the server:**
+---
 
+### Step 5: Start the Development Servers
+
+**Terminal 1 — Backend API:**
 ```bash
-# From root
-pnpm dev:server
+cd server
+pnpm dev
+# Running on http://localhost:8000
 ```
 
-**4. Start the client:**
-
+**Terminal 2 — Frontend Application:**
 ```bash
-# From root
-pnpm dev:client
+cd client
+pnpm dev
+# Running on http://localhost:3000
 ```
 
-**5. Run tests (no infrastructure required):**
-
-```bash
-# Run all backend tests
-pnpm test:server
-
-# Watch mode
-pnpm test:server:watch
-
-# Run all frontend tests
-pnpm test:client
-
-# Watch mode
-pnpm test:client:watch
-```
-
-Tests use mocked dependencies — no database, Redis, or API keys needed.
-
-The API will be available at `http://localhost:8000` and the frontend at `http://localhost:3000`.
+Open [http://localhost:3000/benchmark](http://localhost:3000/benchmark) in your browser!
 
 ---
 
 ## API Reference
 
-All endpoints return responses in the following shape:
+### Benchmark Endpoints
 
-```json
-{
-  "success": true,
-  "message": "Human readable message",
-  "data": {}
-}
-```
-
-Errors follow this shape:
-
-```json
-{
-  "success": false,
-  "message": "Error description",
-  "errorCode": "NOT_FOUND"
-}
-```
-
-### Authentication
-
-| Method | Endpoint                    | Description                               | Auth Required |
-| ------ | --------------------------- | ----------------------------------------- | ------------- |
-| `POST` | `/api/auth/register`        | Create a new account with email/password  | No            |
-| `POST` | `/api/auth/login`           | Login with email/password                 | No            |
-| `POST` | `/api/auth/refresh`         | Exchange refresh token for access token   | No            |
-| `POST` | `/api/auth/logout`          | Invalidate refresh token and clear cookie | No            |
-| `GET`  | `/api/auth/me`              | Get current user profile                  | Yes           |
-| `GET`  | `/api/auth/google`          | Redirect to Google OAuth consent          | No            |
-| `GET`  | `/api/auth/google/callback` | Handle Google OAuth callback              | No            |
-| `GET`  | `/api/auth/github`          | Redirect to GitHub OAuth consent          | No            |
-| `GET`  | `/api/auth/github/callback` | Handle GitHub OAuth callback              | No            |
-
-**Register:**
-
-```bash
-POST /api/auth/register
-Content-Type: application/json
-
-{
-  "email": "user@example.com",
-  "password": "securepassword",
-  "name": "Jane Doe"
-}
-```
-
-**Login:**
-
-```bash
-POST /api/auth/login
-Content-Type: application/json
-
-{
-  "email": "user@example.com",
-  "password": "securepassword"
-}
-```
-
-**Refresh token:**
-
-```bash
-POST /api/auth/refresh
-Content-Type: application/json
-
-{
-  "refreshToken": "your_refresh_token"
-}
-```
-
-The refresh token is also read from the `refreshToken` HTTP-only cookie if present.
-
-**Logout:**
-
-```bash
-POST /api/auth/logout
-```
-
-No body required. Clears the `refreshToken` cookie and invalidates the stored token.
-
-**Get current user:**
-
-```bash
-GET /api/auth/me
-Authorization: Bearer <accessToken>
-```
-
-**Google OAuth:**
-
-Initiate the OAuth flow by redirecting the user to `/api/auth/google`. After granting access, Google redirects back to `/api/auth/google/callback` with an authorization code. The server exchanges the code for tokens, finds or creates the user, and redirects to `{CLIENT_URL}/auth/callback?token={accessToken}`.
-
-Requires `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` environment variables. Returns 503 if not configured.
-
-**GitHub OAuth:**
-
-Same flow as Google but uses `/api/auth/github` and `/api/auth/github/callback`. The server requests the `user:email read:user` scope to retrieve the user's primary verified email.
-
-Requires `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` environment variables. Returns 503 if not configured.
-
-### Workflows
-
-| Method | Endpoint                | Description                      |
-| ------ | ----------------------- | -------------------------------- |
-| `GET`  | `/api/workflow`         | List all workflow definitions    |
-| `GET`  | `/api/workflow/:id`     | Get a single workflow definition |
-| `POST` | `/api/workflow`         | Create a new workflow definition |
-| `POST` | `/api/workflow/:id/run` | Trigger a workflow run           |
-
-**Create a workflow:**
-
-```bash
-POST /api/workflow
-Content-Type: application/json
-
-{
-  "data": {
-    "name": "Company Research Pipeline",
-    "description": "Researches a company and analyses sentiment",
-    "definition": {
-      "nodes": [...],
-      "edges": [...]
-    }
-  }
-}
-```
-
-**Trigger a run:**
-
-```bash
-POST /api/workflow/:id/run
-Content-Type: application/json
-
-{
-  "data": {
-    "input": {
-      "company_name": "Anthropic"
-    }
-  }
-}
-```
-
-### Runs
-
-| Method | Endpoint                         | Description                     |
-| ------ | -------------------------------- | ------------------------------- |
-| `GET`  | `/api/runs`                      | List all workflow runs          |
-| `GET`  | `/api/runs/:id`                  | Get a run with all its tasks    |
-| `GET`  | `/api/runs/workflow/:workflowId` | Get all runs for a workflow     |
-| `GET`  | `/api/runs/:id/stream`           | SSE stream for live run updates |
-
-### Agents
-
-| Method | Endpoint          | Description                |
-| ------ | ----------------- | -------------------------- |
-| `GET`  | `/api/agents`     | List all registered agents |
-| `GET`  | `/api/agents/:id` | Get a single agent         |
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/benchmark/suites` | List all benchmark suites and constituent tasks |
+| `GET` | `/api/benchmark/agents` | List all registered built-in and external agent profiles |
+| `POST` | `/api/benchmark/agents` | Register a new external agent webhook |
+| `POST` | `/api/benchmark/run` | Launch a benchmark run with iterations and chaos toggles |
+| `GET` | `/api/benchmark/runs` | List historical benchmark runs |
+| `GET` | `/api/benchmark/runs/:id` | Get detailed comparison matrix and execution traces |
+| `GET` | `/api/benchmark/leaderboard` | Get ranked agent leaderboard standings |
 
 ---
 
-## Agent Types
+## Design System & Palette
 
-| Type                 | Description                                        | Use Case                                                  |
-| -------------------- | -------------------------------------------------- | --------------------------------------------------------- |
-| `LLM_AGENT`          | Calls Groq with a configurable prompt template     | Summarisation, classification, extraction, generation     |
-| `HTTP_AGENT`         | Makes an HTTP request to any external API          | Fetching data, sending webhooks, third-party integrations |
-| `TRANSFORM_AGENT`    | Transforms and reshapes JSON data                  | Filtering fields, mapping values, formatting              |
-| `EXTRACTION_AGENT`   | Extracts structured data from unstructured sources | Web scraping, PDF parsing, raw text parsing               |
-| `NOTIFICATION_AGENT` | Sends notifications                                | Emails, Slack messages, webhooks                          |
-| `STORAGE_AGENT`      | Reads from or writes to external storage           | Saving results, reading files, S3 operations              |
+Quelm features an editorial, typographic aesthetic:
 
----
-
-## Workflow Definition Schema
-
-A workflow definition is a JSON object with `nodes` and `edges`:
-
-```json
-{
-  "nodes": [
-    {
-      "id": "node_1",
-      "type": "LLM_AGENT",
-      "name": "Research Company",
-      "critical": true,
-      "config": {
-        "promptTemplate": "Research {{company_name}} and summarise their recent news in 3 bullet points.",
-        "model": "llama-3.3-70b-versatile",
-        "maxTokens": 500
-      }
-    },
-    {
-      "id": "node_2",
-      "type": "LLM_AGENT",
-      "name": "Sentiment Analysis",
-      "critical": true,
-      "config": {
-        "promptTemplate": "Analyse the sentiment of this text — return positive, negative, or neutral with a one sentence reason: {{text}}",
-        "model": "llama-3.3-70b-versatile",
-        "maxTokens": 100
-      }
-    }
-  ],
-  "edges": [
-    {
-      "id": "edge_1",
-      "source": "node_1",
-      "target": "node_2"
-    }
-  ]
-}
-```
-
-Prompt templates support `{{variable}}` placeholders. The first node receives the run input as its variables. Subsequent nodes receive the output of their dependency tasks.
+| Role | Color | Hex |
+|---|---|---|
+| **Background / Canvas** | Warm Cream | `#F3EEE3` |
+| **Primary Text / Accents** | Ink Black | `#111111` |
+| **Interactive Primary** | Burnt Orange | `#D9541E` |
+| **Card Surface** | Soft Cream | `#FAF7F2` |
+| **Borders** | Muted Ink | `#111111/10` |
 
 ---
 
-## How It Works
+## License
 
-### Creating a Workflow
-
-Open the Workflow Builder, drag agent nodes onto the canvas, connect them with edges, and configure each node's prompt or settings in the side panel. Save the workflow — it gets stored as a JSON definition in PostgreSQL.
-
-### Triggering a Run
-
-Click Run on any saved workflow, fill in the input payload, and hit Execute. The API creates a `WorkflowRun` row, instantiates `Task` rows for every node, builds a dependency map from the edges, and dispatches the first tasks (those with no incoming edges) to the appropriate BullMQ queues. The run starts asynchronously and the API returns immediately with a `runId`.
-
-### Live Run Monitor
-
-The frontend opens an SSE connection to `/api/runs/:id/stream`. As each task completes, the worker updates the database and the orchestrator emits an event on the `RunEmitter`. The SSE endpoint pushes that event to the browser — the canvas node changes colour (blue for running, green for completed, red for failed) without a single page refresh.
-
-### Retry and Failure Handling
-
-Every task has a configurable `maxAttempts` (default 3). BullMQ retries failed jobs with exponential backoff. If a task marked `critical: true` exhausts all attempts, the entire workflow run is marked `FAILED` and all pending tasks are cancelled. Non-critical task failures are logged and skipped — the run continues with remaining tasks.
-
-### Stale Run Timeout
-
-Runs that have been in `RUNNING` status for more than 10 minutes with no task activity (no task has reached `RUNNING` or `COMPLETED`) are automatically marked as `FAILED` and all pending tasks are cancelled. A background job runs every 5 minutes to detect and clean up stale runs. This covers edge cases where invalid configuration, type mismatches, or worker unavailability prevent any task from progressing.
-
----
-
-## Testing
-
-The project includes both backend and frontend test suites powered by **Vitest**. Tests are designed to run locally and in CI without requiring external infrastructure such as databases, Redis instances, or third-party API keys.
-
-### Backend Test Structure
-
-```text
-server/__tests__/
-├── setup.ts                # Global mocks (Prisma, Redis, BullMQ, Groq, Winston)
-├── helpers/
-│   ├── prisma.ts           # Mock PrismaClient factory
-│   └── app.ts              # Express app builder for integration tests
-├── utils/                  # Error classes, template interpolation
-├── services/               # Workflow, auth, run, agent, dashboard
-├── orchestrator/           # Workflow engine, dependency resolution, event handling
-└── api/                    # Integration tests via supertest
-```
-
-### Frontend Test Structure
-
-```text
-client/__tests__/
-├── helpers.tsx             # Shared render utilities and mock factories
-├── LoginPage.test.tsx
-├── RegisterPage.test.tsx
-├── RunPage.test.tsx
-├── AgentsPage.test.tsx
-└── StatCard.test.tsx
-```
-
-### Coverage Areas
-
-#### Backend
-
-| Layer        | Tests | What's tested                                                 |
-| ------------ | ----- | ------------------------------------------------------------- |
-| Utils        | 11    | Error classes, `{{placeholder}}` interpolation                |
-| Services     | 38    | CRUD validation, ownership checks, auth flow, stats           |
-| Orchestrator | 13    | triggerRun, dependency graph, task dispatch, failure handling |
-| API          | 37    | Auth, workflows, agents, dashboard — via supertest            |
-
-#### Frontend
-
-| Area        | What's tested                                                    |
-| ----------- | ---------------------------------------------------------------- |
-| Auth Pages  | Login and registration flows, validation, redirects, and toasts  |
-| Runs Page   | Loading, error, empty, and populated states, duration formatting |
-| Agents Page | Agent listing, loading states, and empty-state rendering         |
-| Components  | Dashboard components such as StatCard                            |
-
-### Running Tests
-
-```bash
-# Run all tests
-pnpm test
-
-# Run backend tests
-pnpm test:server
-
-# Run frontend tests
-pnpm test:client
-
-# Backend watch mode
-pnpm test:server:watch
-
-# Frontend watch mode
-pnpm test:client:watch
-
-# Run a specific backend test file
-pnpm --filter server vitest run __tests__/services/workflow.service.test.ts
-
-# Run a specific frontend test file
-pnpm --filter client vitest run __tests__/LoginPage.test.tsx
-```
-
-### CI Integration
-
-The test suite is automatically executed in GitHub Actions on every push and pull request to ensure that frontend and backend changes do not introduce regressions.
-
-### Mock Strategy
-
-#### Backend
-
-- **`@prisma/client`** — globally mocked; `PrismaClient` returns configured mock methods
-- **`bullmq`** — `Queue`, `Worker`, and `QueueEvents` are mocked; no Redis connection required
-- **`ioredis`** — `Redis` constructor returns a no-op mock
-- **`groq-sdk`** — `Groq` returns a mock `chat.completions.create`
-- **`winston`** — `createLogger` returns a no-op logger
-- **`bcryptjs`** — `hash` and `compare` are stubbed to avoid real crypto operations
-
-#### Frontend
-
-- **`next/navigation`** — mocked router and navigation hooks
-- **`next/link`** — rendered as a standard anchor element for assertions
-- **`sonner`** — toast notifications mocked to prevent portal rendering
-- **`@xyflow/react`** — React Flow components mocked for lightweight testing
-- **`@monaco-editor/react`** — Monaco editor replaced with a simple textarea
-- **React Query** — wrapped with a dedicated test `QueryClientProvider`
-- Shared mock factories provide reusable workflow, run, agent, and dashboard data
-
-Services use dependency injection and isolated mocks, allowing tests to run quickly and deterministically without external services.
-
----
-
-## Deployment
-
-### Frontend — Vercel
-
-1. Push your code to GitHub
-2. Go to [vercel.com](https://vercel.com) and import the repository
-3. Set the root directory to `client`
-4. Add the environment variable `NEXT_PUBLIC_API_URL` pointing to your Render backend URL
-5. Deploy — Vercel auto-deploys on every push to `main`
-
-### Backend — Render
-
-1. Go to [render.com](https://render.com) and create a new **Web Service**
-2. Connect your GitHub repository and set the root directory to `server`
-3. Set the build command to `pnpm install && pnpm prisma generate && pnpm build`
-4. Set the start command to `pnpm start`
-5. Add a **PostgreSQL** database from the Render dashboard — it injects `DATABASE_URL` automatically
-6. Add a **Redis** instance from the Render dashboard — copy the external URL into `REDIS_URL`
-7. Add remaining environment variables — `GROQ_API_KEY`, `PORT`, `NODE_ENV=production`
-8. Deploy
-
-> Both Vercel and Render have free tiers that cover this project with no credit card required.
-
----
-
-## Roadmap
-
-- [x] User authentication (JWT + refresh tokens)
-- [x] HTTP Agent implementation
-- [x] Transform Agent implementation
-- [x] Backend testing infrastructure (Vitest, 83 tests)
-- [ ] Node name editing in the workflow builder
-- [ ] Workflow versioning
-- [ ] Scheduled workflow triggers (cron)
-- [ ] Webhook triggers
-- [ ] Multi-tenancy support
-
----
-
-## Contributing
-
-Contributions, issues, and feature requests are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md) for setup instructions, coding standards, branching strategy, and a step-by-step guide to adding new agent types.
-
-1. Fork the repository
-2. Create a feature branch — `git checkout -b feature/my-feature`
-3. Commit your changes — `git commit -m 'feat: add my feature'`
-4. Push to the branch — `git push origin feature/my-feature`
-5. Open a Pull Request against `main`
+MIT © [Ankit](https://github.com/Ankit-cs) — Built for the Global AI Hackathon.
