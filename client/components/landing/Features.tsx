@@ -6,44 +6,47 @@ import {
   ShieldCheck,
   Workflow,
   Zap,
+  Gauge,
+  Flame,
+  Terminal,
 } from "lucide-react";
 
 const FEATURES = [
   {
-    icon: Workflow,
-    title: "Visual Workflow Builder",
+    icon: Gauge,
+    title: "Framework-Independent Benchmarking",
     description:
-      "Compose distributed AI workflows visually with drag-and-drop nodes and dependency graphs.",
+      "Evaluate LangChain, CrewAI, AutoGen, and custom agents against identical tasks with ground-truth scoring.",
+  },
+  {
+    icon: Flame,
+    title: "Chaos & Failure Testing",
+    description:
+      "Inject simulated 500 tool errors, 429 model rate-limits, and adversarial distractors to measure true agent resilience.",
+  },
+  {
+    icon: Terminal,
+    title: "Execution Trace Diff Viewer",
+    description:
+      "Step-by-step synchronized timelines comparing thoughts, tool calls, token usage, latency, and cost across agents.",
+  },
+  {
+    icon: Workflow,
+    title: "Visual Workflow Orchestration",
+    description:
+      "Compose distributed multi-agent pipelines visually with drag-and-drop nodes, branching logic, and live canvas status.",
   },
   {
     icon: BrainCircuit,
-    title: "Modular AI Agents",
+    title: "Modular Gemini 2.0 Flash AI",
     description:
-      "Plug in Gemini LLM, HTTP, Transform, and custom agents without touching orchestration logic.",
-  },
-  {
-    icon: Activity,
-    title: "Live Run Monitoring",
-    description:
-      "Watch every workflow execute in real time with live node status updates and streaming events.",
+      "Native Google Gemini integration with automatic retry, exponential backoff, and zero-cost free-tier execution.",
   },
   {
     icon: Server,
-    title: "Distributed Workers",
+    title: "Distributed BullMQ Workers",
     description:
-      "Scale horizontally with independent worker processes powered by BullMQ and Redis.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Automatic Retries",
-    description:
-      "Built-in exponential backoff, dead-letter queues, and fault-tolerant execution.",
-  },
-  {
-    icon: GitBranch,
-    title: "Dependency Resolution",
-    description:
-      "Parallel execution, sequential chains, and fan-out flows handled automatically.",
+      "Enterprise queue architecture backed by Redis and PostgreSQL with persistent execution history.",
   },
 ];
 
@@ -54,16 +57,16 @@ const Features = () => {
         <div className="max-w-3xl">
           <div className="inline-flex items-center gap-2 rounded-full border border-[#111111]/10 bg-[#FAF7F2] px-4 py-2 text-xs font-medium text-[#111111] shadow-xs">
             <Zap className="h-3.5 w-3.5 text-[#D9541E]" />
-            Platform Features
+            Platform Capabilities
           </div>
 
           <h2 className="mt-6 text-4xl font-semibold tracking-tight text-[#111111] md:text-5xl">
-            Designed for modern AI orchestration
+            Benchmarking, Chaos Testing & Orchestration
           </h2>
 
           <p className="mt-6 text-lg leading-relaxed text-[#554E46]">
-            Quelm combines distributed systems architecture with AI-native workflow
-            tooling to provide a resilient execution platform for autonomous pipelines.
+            Quelm combines framework-agnostic agent evaluation with an industrial-grade
+            distributed execution engine to test, compare, and scale autonomous AI systems.
           </p>
         </div>
 

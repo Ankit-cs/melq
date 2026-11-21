@@ -9,13 +9,13 @@ const Navbar = () => {
       {/* Top Announcement Bar from the screenshot */}
       <div className="w-full bg-[#111111] px-4 py-2 text-center text-xs font-medium text-[#F3EEE3]">
         <Link
-          href="/auth/register"
+          href="/benchmark"
           className="inline-flex items-center gap-2 transition-opacity hover:opacity-85"
         >
           <span className="rounded-full bg-[#D9541E] px-2 py-0.5 text-[10px] font-semibold tracking-wide uppercase text-white">
-            New
+            Live
           </span>
-          <span>Announcing Quelm 2.0: Autonomous AI agent workflows powered by Gemini</span>
+          <span>Announcing Quelm Benchmarks: Independent evaluation & chaos-testing for AI agents</span>
           <ArrowRight className="h-3 w-3" />
         </Link>
       </div>
@@ -34,36 +34,37 @@ const Navbar = () => {
           </Link>
 
           {/* Nav links */}
-          <nav className="hidden items-center gap-8 md:flex">
-            <a
-              href="#product"
+          <nav className="hidden items-center gap-7 md:flex">
+            <Link
+              href="/benchmark"
+              className="text-sm font-semibold text-[#D9541E] transition-colors hover:text-[#C24716] flex items-center gap-1.5"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-[#D9541E]" />
+              Benchmark Arena
+            </Link>
+            <Link
+              href="/leaderboard"
               className="text-sm font-medium text-[#111111]/70 transition-colors hover:text-[#111111]"
             >
-              Product
+              Leaderboard
+            </Link>
+            <Link
+              href="/workflows"
+              className="text-sm font-medium text-[#111111]/70 transition-colors hover:text-[#111111]"
+            >
+              Workflows
+            </Link>
+            <a
+              href="#features"
+              className="text-sm font-medium text-[#111111]/70 transition-colors hover:text-[#111111]"
+            >
+              Chaos Testing
             </a>
             <a
-              href="#customers"
+              href="#architecture"
               className="text-sm font-medium text-[#111111]/70 transition-colors hover:text-[#111111]"
             >
-              Customers
-            </a>
-            <a
-              href="#pricing"
-              className="text-sm font-medium text-[#111111]/70 transition-colors hover:text-[#111111]"
-            >
-              Pricing
-            </a>
-            <a
-              href="#changelog"
-              className="text-sm font-medium text-[#111111]/70 transition-colors hover:text-[#111111]"
-            >
-              Changelog
-            </a>
-            <a
-              href="#careers"
-              className="text-sm font-medium text-[#111111]/70 transition-colors hover:text-[#111111]"
-            >
-              Careers
+              Architecture
             </a>
           </nav>
 

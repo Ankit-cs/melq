@@ -14,6 +14,17 @@ const Hero = () => {
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
           {/* Left Column: Copy & CTAs */}
           <div className="flex flex-col items-start text-left">
+            <Link
+              href="/benchmark"
+              className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#D9541E]/30 bg-[#FAF7F2] px-3.5 py-1 text-xs font-medium text-[#111111] shadow-xs transition-colors hover:border-[#D9541E]/60"
+            >
+              <span className="flex h-2 w-2 rounded-full bg-[#D9541E] animate-pulse" />
+              <span className="font-semibold text-[#D9541E]">AI Agent Arena</span>
+              <span className="text-[#6B6358]">|</span>
+              <span className="text-[#554E46]">Benchmark & Chaos Test LangChain, CrewAI & Custom Agents</span>
+              <ArrowRight className="h-3 w-3 text-[#D9541E]" />
+            </Link>
+
             <h1 className="text-5xl font-bold tracking-tight text-[#111111] sm:text-6xl md:text-7xl leading-[1.06]">
               The AI teammate <br />
               <span className="font-serif italic font-normal tracking-normal text-[#111111]">
@@ -22,17 +33,16 @@ const Hero = () => {
             </h1>
 
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-[#554E46]">
-              Quelm reads your inbox, Slack and workflows, then clears the busywork
-              overnight. You wake up to a done list, not a to-do list.
+              Quelm benchmarks and runs autonomous AI agents with repeatable chaos testing — measuring task success, token cost, tool reliability, and execution traces across any framework.
             </p>
 
             {/* CTAs */}
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Link
-                href="/auth/register"
+                href="/benchmark"
                 className="inline-flex items-center gap-2.5 rounded-full bg-[#D9541E] px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-[#D9541E]/30 transition-all duration-300 hover:scale-[1.02] hover:bg-[#C24716] active:scale-[0.98]"
               >
-                Get early access
+                Launch Benchmarks
                 <ArrowRight className="h-4 w-4" />
               </Link>
 

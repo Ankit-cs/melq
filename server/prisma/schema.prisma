@@ -35,7 +35,7 @@ model RefreshToken {
   @@map("refresh_tokens")
 }
 
-// This is the blueprint. It doesn't change when you run a workflow, it's just the saved structure.
+// Blueprint structure for workflows
 model WorkflowDefinition {
   id          String   @id @default(cuid())
   name        String
@@ -51,7 +51,7 @@ model WorkflowDefinition {
   @@map("workflow_definitions")
 }
 
-// This is a live execution of a workflow definition. Every time you hit "Run" on a workflow, a new WorkflowRun row is created. The definition stays untouched, the run is what changes over time.
+// Live execution of a workflow definition
 model WorkflowRun {
   id          String    @id @default(cuid())
   workflowId  String
@@ -70,7 +70,7 @@ model WorkflowRun {
   @@map("workflow_runs")
 }
 
-// This is a single step in a workflow run. Every node in your workflow graph becomes a Task row when a run starts. If your workflow has 4 nodes, a run creates 4 task rows.
+// Single step in a workflow run
 model Task {
   id          String     @id @default(cuid())
   runId       String
@@ -83,7 +83,7 @@ model Task {
   attempts    Int        @default(0)
   maxAttempts Int        @default(3)
   dependsOn   Json       @default("[]")
-  critical    Boolean   @default(true)
+  critical    Boolean    @default(true)
   nodeId      String?
   startedAt   DateTime?
   completedAt DateTime?
@@ -94,7 +94,7 @@ model Task {
   @@map("tasks")
 }
 
-// This is the worker registry. Every agent process that starts up registers itself here so the system knows it exists and what it can do.
+// Worker registry
 model Agent {
   id           String      @id @default(cuid())
   name         String
@@ -107,6 +107,121 @@ model Agent {
 
   @@unique([name, type])
   @@map("agents")
+}
+
+// =========================================================================
+// AI AGENT BENCHMARKING & CHAOS TESTING MODELS
+// =========================================================================
+
+model BenchmarkSuite {
+  id          String   @id @default(cuid())
+  name        String
+  category    String   // "RESEARCH", "CODING", "CUSTOMER_SUPPORT", "TOOL_USE"
+  description String
+  tasks       BenchmarkTask[]
+  runs        BenchmarkRun[]
+  createdAt   DateTime @default(now())
+
+  @@map("benchmark_suites")
+}
+
+model BenchmarkTask {
+  id              String   @id @default(cuid())
+  suiteId         String
+  title           String
+  description     String
+  prompt          String
+  expectedOutput  String
+  evalCriteria    Json     // Rules for scoring (e.g. requiredKeywords, regex, schema)
+  availableTools  Json     // Tools allowed for this task: ["web_search", "calculator", "api_fetch"]
+  createdAt       DateTime @default(now())
+
+  suite           BenchmarkSuite       @relation(fields: [suiteId], references: [id], onDelete: Cascade)
+  executions      BenchmarkExecution[]
+
+  @@map("benchmark_tasks")
+}
+
+model BenchmarkAgentProfile {
+  id          String   @id @default(cuid())
+  name        String   // e.g. "LangChain ReAct Agent", "CrewAI Multi-Role", "Quelm Resilient Agent"
+  framework   String   // "LangChain", "CrewAI", "AutoGen", "Quelm", "CustomHTTP"
+  modelName   String   // "gemini-2.0-flash", "gemini-1.5-flash", etc.
+  description String?
+  endpointUrl String?  // Optional webhook URL if external agent
+  type        String   @default("INTERNAL_REACT") // INTERNAL_REACT, INTERNAL_NAIVE, INTERNAL_PIPELINE, EXTERNAL_WEBHOOK
+  createdAt   DateTime @default(now())
+
+  executions  BenchmarkExecution[]
+
+  @@map("benchmark_agent_profiles")
+}
+
+model BenchmarkRun {
+  id            String             @id @default(cuid())
+  suiteId       String
+  name          String
+  status        BenchmarkRunStatus @default(PENDING)
+  iterations    Int                @default(3) // Repeatability test (e.g., 3x or 5x)
+  chaosConfig   Json               // { enableFailingTools: true, failureRate: 0.3, enableRateLimits: true, enableMisleadingContext: true }
+  summary       Json?              // Aggregated metrics across all tested agents
+  createdAt     DateTime           @default(now())
+  completedAt   DateTime?
+
+  suite         BenchmarkSuite       @relation(fields: [suiteId], references: [id], onDelete: Cascade)
+  executions    BenchmarkExecution[]
+
+  @@map("benchmark_runs")
+}
+
+model BenchmarkExecution {
+  id               String               @id @default(cuid())
+  runId            String
+  taskId           String
+  agentId          String
+  iteration        Int                  @default(1)
+  status           ExecutionStatus      @default(PENDING)
+  success          Boolean              @default(false)
+  score            Float                @default(0.0) // 0 - 100
+  latencyMs        Int                  @default(0)
+  promptTokens     Int                  @default(0)
+  completionTokens Int                  @default(0)
+  totalCostUsd     Float                @default(0.0)
+  stepsCount       Int                  @default(0)
+  toolCallsCount   Int                  @default(0)
+  chaosInjected    Boolean              @default(false)
+  chaosType        String?
+  chaosHandled     Boolean              @default(false)
+  finalAnswer      String?
+  evalNotes        String?
+  error            String?
+  createdAt        DateTime             @default(now())
+
+  run              BenchmarkRun          @relation(fields: [runId], references: [id], onDelete: Cascade)
+  task             BenchmarkTask         @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  agent            BenchmarkAgentProfile @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  traces           ExecutionTraceStep[]
+
+  @@map("benchmark_executions")
+}
+
+model ExecutionTraceStep {
+  id           String        @id @default(cuid())
+  executionId  String
+  stepIndex    Int
+  type         TraceStepType
+  name         String
+  input        Json?
+  output       Json?
+  durationMs   Int           @default(0)
+  tokens       Int?          @default(0)
+  isChaos      Boolean       @default(false)
+  chaosDetails String?
+  createdAt    DateTime      @default(now())
+
+  execution    BenchmarkExecution @relation(fields: [executionId], references: [id], onDelete: Cascade)
+
+  @@map("execution_trace_steps")
 }
 
 enum RunStatus {
@@ -138,4 +253,28 @@ enum AgentType {
   EXTRACTION_AGENT
   NOTIFICATION_AGENT
   STORAGE_AGENT
+}
+
+enum BenchmarkRunStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+enum ExecutionStatus {
+  PENDING
+  RUNNING
+  SUCCESS
+  FAILED
+  TIMEOUT
+  ERROR
+}
+
+enum TraceStepType {
+  THOUGHT
+  TOOL_CALL
+  TOOL_RESULT
+  CHAOS_INJECTED
+  FINAL_ANSWER
 }

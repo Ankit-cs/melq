@@ -11,6 +11,7 @@ import { createApiRoutes } from "./api";
 import { swaggerRouter } from "./swagger";
 import { errorHandlerMiddleware } from "./middleware/error.middleware";
 import { requestLogger } from "./middleware/request-logger.middleware";
+import { seedBenchmarkSuites } from "./engine/benchmark/suites.seed";
 
 dotenv.config();
 
@@ -43,6 +44,11 @@ const start = async (): Promise<void> => {
     // Verify database connection
     await prisma.$connect();
     logger.success("Database connected successfully");
+
+    // Seed benchmark test suites & sample agents
+    await seedBenchmarkSuites().catch((err) => {
+      logger.warn(`Could not seed benchmarks on boot: ${err.message}`);
+    });
 
     // Start agents
     await AgentRegistry.startAgents();
