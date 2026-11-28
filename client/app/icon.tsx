@@ -35,22 +35,21 @@ export default function Icon() {
         }}
       />
 
-      {/* Raw SVG for Lucide Workflow Icon */}
-      <svg
-        xmlns="http://w3.org"
-        width="30"
-        height="30"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="white"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+      {/* M brand mark */}
+      <div
+        style={{
+          fontSize: 34,
+          fontWeight: 900,
+          color: "#F3EEE3",
+          fontFamily: "system-ui, sans-serif",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          lineHeight: 1,
+        }}
       >
-        <rect width="8" height="8" x="3" y="3" rx="2" />
-        <path d="M7 11v4a2 2 0 0 0 2 2h4" />
-        <rect width="8" height="8" x="13" y="13" rx="2" />
-      </svg>
+        M
+      </div>
 
       {/* status dot */}
       <div
@@ -61,7 +60,7 @@ export default function Icon() {
           width: 8,
           height: 8,
           borderRadius: "9999px",
-          background: "#4ade80",
+          background: "#D9541E",
         }}
       />
     </div>,

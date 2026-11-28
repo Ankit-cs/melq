@@ -4,7 +4,7 @@ import spec from "./openapi";
 
 const swaggerOptions = {
   customCss: ".swagger-ui .topbar { display: none }",
-  customSiteTitle: "Quelm API Documentation",
+  customSiteTitle: "Melq API Documentation",
   swaggerOptions: {
     persistAuthorization: true,
     displayRequestDuration: true,

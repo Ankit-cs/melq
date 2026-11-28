@@ -23,8 +23,8 @@ const serif = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Quelm",
-  description: "Distributed multi-agent workflow platform",
+  title: "Melq",
+  description: "Framework-independent AI agent benchmarking, chaos-testing & execution platform",
 };
 export default function RootLayout({
   children,

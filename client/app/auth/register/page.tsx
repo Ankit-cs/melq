@@ -47,13 +47,13 @@ export default function RegisterPage() {
       <Card className="relative w-full max-w-sm border-[#111111]/10 bg-[#FAF7F2] shadow-2xl shadow-[#111111]/8">
         <CardHeader className="items-center text-center">
           <div className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#111111] text-[#F3EEE3] shadow-xs">
-              <Workflow className="h-5 w-5" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#111111] text-[#F3EEE3] font-black text-lg shadow-xs">
+              M
             </div>
-            <span className="text-lg font-semibold tracking-tight text-[#111111]">Quelm</span>
+            <span className="text-lg font-semibold tracking-tight text-[#111111]">Melq</span>
           </div>
           <CardTitle className="text-[#111111]">Create an account</CardTitle>
-          <CardDescription className="text-[#6B6358]">Get started with Quelm</CardDescription>
+          <CardDescription className="text-[#6B6358]">Get started with Melq</CardDescription>
         </CardHeader>
 
         <CardContent>

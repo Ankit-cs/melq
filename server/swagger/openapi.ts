@@ -3,12 +3,12 @@ import type { OpenAPI } from "openapi-types";
 const spec: OpenAPI.Document = {
   openapi: "3.0.3",
   info: {
-    title: "Quelm API",
+    title: "Melq API",
     description:
       "Workflow orchestration platform API. Manage workflows, run executions, and monitor agent status.",
     version: "1.0.0",
     contact: {
-      name: "Quelm Team",
+      name: "Melq Team",
     },
   },
   servers: [

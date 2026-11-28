@@ -1,6 +1,6 @@
-# Contributing to Quelm
+# Contributing to Melq
 
-Thanks for your interest in contributing to Quelm. This document covers everything you need to get started — project structure, development setup, coding standards, and the contribution workflow.
+Thanks for your interest in contributing to Melq. This document covers everything you need to get started — project structure, development setup, coding standards, and the contribution workflow.
 
 ---
 
@@ -42,7 +42,7 @@ If anything is unclear, open a discussion before starting work.
 ## Project Structure
 
 ```
-quelm/
+Melq/
 ├── client/                         # Next.js frontend
 │   ├── __tests__/                  # Test Suite
 │   ├── app/                        # App router pages
@@ -112,8 +112,8 @@ quelm/
 ### Install dependencies
 
 ```bash
-git clone https://github.com/yourusername/quelm.git
-cd quelm
+git clone https://github.com/yourusername/Melq.git
+cd Melq
 pnpm install
 ```
 

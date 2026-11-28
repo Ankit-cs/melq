@@ -20,12 +20,13 @@ const Icon = ({ className, size = 44, showDot = true }: IconProps) => {
       {/* glow */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(217,84,30,0.25),transparent_60%)]" />
 
-      {/* icon */}
-      <Workflow
-        className="relative z-10 text-[#F3EEE3]"
-        size={size * 0.45}
-        strokeWidth={2.2}
-      />
+      {/* M brand letter */}
+      <span
+        className="relative z-10 font-black tracking-tight text-[#F3EEE3] select-none flex items-center justify-center"
+        style={{ fontSize: size * 0.5, lineHeight: 1 }}
+      >
+        M
+      </span>
 
       {/* status dot */}
       {showDot && (

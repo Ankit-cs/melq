@@ -290,7 +290,7 @@ export default function LeaderboardPage() {
                   className="w-full rounded-xl border border-border bg-card p-2.5 text-foreground placeholder:text-muted-foreground font-mono"
                 />
                 <p className="mt-1 text-[10px] text-muted-foreground">
-                  Quelm Bench will POST {`{ taskId, prompt, availableTools }`} to this URL and record live traces.
+                  Melq Bench will POST {`{ taskId, prompt, availableTools }`} to this URL and record live traces.
                 </p>
               </div>
 

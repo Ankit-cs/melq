@@ -2,8 +2,8 @@ import aiClient from "../../../config/groq.config";
 import { AgentExecutionContext, AgentExecutionOutput, IBenchmarkAgent } from "./agent.interface";
 
 export class ResilientReactAgent implements IBenchmarkAgent {
-  public name = "Quelm Resilient ReAct Agent";
-  public framework = "Quelm / Native ReAct";
+  public name = "Melq Resilient ReAct Agent";
+  public framework = "Melq / Native ReAct";
   public model = "gemini-2.0-flash";
 
   async run(ctx: AgentExecutionContext): Promise<AgentExecutionOutput> {

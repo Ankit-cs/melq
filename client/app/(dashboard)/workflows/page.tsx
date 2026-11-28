@@ -22,7 +22,7 @@ const WorkflowPage = () => {
     return (
       <ErrorState
         title="Failed to load workflows"
-        description="Quelm could not retrieve workflow definitions from the orchestration layer."
+        description="Melq could not retrieve workflow definitions from the orchestration layer."
         onRetry={() => refetch()}
       />
     );
@@ -39,7 +39,7 @@ const WorkflowPage = () => {
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">Workflows</h1>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Create, orchestrate, and monitor distributed AI workflows across your Quelm
+            Create, orchestrate, and monitor distributed AI workflows across your Melq
             cluster.
           </p>
         </div>

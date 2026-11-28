@@ -58,7 +58,7 @@ const AgentsPage = () => {
           <h1 className="text-4xl font-semibold tracking-tight">Agent Cluster</h1>
 
           <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-            Monitor all registered workflow agents across the Quelm execution layer,
+            Monitor all registered workflow agents across the Melq execution layer,
             inspect runtime health, task throughput, and orchestration availability in
             real time.
           </p>
@@ -69,7 +69,7 @@ const AgentsPage = () => {
       {error && (
         <ErrorState
           title="Failed to load agents"
-          description="Quelm could not retrieve worker heartbeat data from the orchestration layer."
+          description="Melq could not retrieve worker heartbeat data from the orchestration layer."
           onRetry={refetch}
         />
       )}
@@ -119,7 +119,7 @@ const AgentsPage = () => {
           </h2>
 
           <p className="mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
-            Start a worker process to register execution agents with the Quelm
+            Start a worker process to register execution agents with the Melq
             orchestration layer.
           </p>
 

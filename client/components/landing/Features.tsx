@@ -65,7 +65,7 @@ const Features = () => {
           </h2>
 
           <p className="mt-6 text-lg leading-relaxed text-[#554E46]">
-            Quelm combines framework-agnostic agent evaluation with an industrial-grade
+            Melq combines framework-agnostic agent evaluation with an industrial-grade
             distributed execution engine to test, compare, and scale autonomous AI systems.
           </p>
         </div>

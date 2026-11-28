@@ -50,3 +50,7 @@ coverage
 # Misc
 .tmp
 .cache
+
+# Local analysis & interview notes (not for GitHub)
+analyse*.txt
+INTERVIEW_PREP.md

@@ -33,7 +33,7 @@ const Hero = () => {
             </h1>
 
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-[#554E46]">
-              Quelm benchmarks and runs autonomous AI agents with repeatable chaos testing — measuring task success, token cost, tool reliability, and execution traces across any framework.
+              Melq benchmarks and runs autonomous AI agents with repeatable chaos testing — measuring task success, token cost, tool reliability, and execution traces across any framework.
             </p>
 
             {/* CTAs */}
@@ -102,18 +102,18 @@ const Hero = () => {
               <div className="relative min-h-[480px] w-full overflow-hidden rounded-[28px] bg-[#111111]">
                 {/* Editorial Photo */}
                 <img
-                  src="https://images.unsplash.com/photo-1506146332389-18140dc7b2fb?q=80&w=1200&auto=format&fit=crop"
-                  alt="City street view"
+                  src="/kanpur.jpg"
+                  alt="Kanpur architectural landmark"
                   className="h-full w-full object-cover object-center grayscale contrast-125 brightness-90"
                 />
 
                 {/* Ambient vignette */}
                 <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-black/40" />
 
-                {/* Top Left Badge: Built in San Francisco */}
+                {/* Top Left Badge: Built in Kanpur */}
                 <div className="absolute left-5 top-5 z-20 flex items-center gap-1.5 rounded-full border border-white/20 bg-black/45 px-3.5 py-1.5 text-xs font-medium text-white shadow-md backdrop-blur-md">
                   <span>📍</span>
-                  <span>Built in San Francisco</span>
+                  <span>Built in Kanpur</span>
                 </div>
 
                 {/* Top Right Floating Card: Time saved this week */}
@@ -250,7 +250,7 @@ const Hero = () => {
                   <Workflow className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold">Quelm Interactive Demo</h3>
+                  <h3 className="text-base font-bold">Melq Interactive Demo</h3>
                   <p className="text-xs text-[#6B6358]">See how AI agents run unattended</p>
                 </div>
               </div>

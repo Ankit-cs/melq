@@ -18,7 +18,7 @@ describe("Swagger / OpenAPI Documentation", () => {
 
       expect(res.body).toHaveProperty("openapi", "3.0.3");
       expect(res.body).toHaveProperty("info");
-      expect(res.body.info.title).toBe("Quelm API");
+      expect(res.body.info.title).toBe("Melq API");
       expect(res.body.info.version).toBe("1.0.0");
     });
 

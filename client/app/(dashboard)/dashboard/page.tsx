@@ -17,7 +17,7 @@ const Page = () => {
 
         <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
           Monitor workflow execution health, distributed agent activity, orchestration
-          metrics, and real-time pipeline execution across your Quelm cluster.
+          metrics, and real-time pipeline execution across your Melq cluster.
         </p>
       </div>
 

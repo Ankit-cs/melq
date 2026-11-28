@@ -60,7 +60,7 @@ const RunPage = () => {
           <h1 className="text-4xl font-semibold tracking-tight">Workflow Runs</h1>
 
           <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-            Observe workflow executions across the Quelm orchestration layer, inspect task
+            Observe workflow executions across the Melq orchestration layer, inspect task
             progress, execution duration, retries, and runtime health in real time.
           </p>
         </div>
@@ -70,7 +70,7 @@ const RunPage = () => {
       {error && (
         <ErrorState
           title="Failed to load runs"
-          description="Quelm could not retrieve workflow execution history from the orchestration
+          description="Melq could not retrieve workflow execution history from the orchestration
             layer."
           onRetry={refetch}
         />

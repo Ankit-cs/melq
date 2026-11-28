@@ -264,7 +264,7 @@ export default function UnsupportedScreen() {
                 color: "oklch(0.75 0 0)",
               }}
             >
-              Quelm
+              Melq
             </span>
           </div>
         </div>
@@ -416,7 +416,7 @@ export default function UnsupportedScreen() {
               letterSpacing: "0.01em",
             }}
           >
-            Quelm is optimised for laptops, desktops, and large tablets.
+            Melq is optimised for laptops, desktops, and large tablets.
             <br />
             Please switch to a bigger screen to access the full experience.
           </p>
@@ -485,7 +485,7 @@ export default function UnsupportedScreen() {
           transition: "opacity 0.6s ease 1s",
         }}
       >
-        quelm · desktop only
+        melq · desktop only
       </div>
     </div>
   );

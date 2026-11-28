@@ -114,8 +114,8 @@ export async function seedBenchmarkSuites(): Promise<void> {
   await prisma.benchmarkAgentProfile.createMany({
     data: [
       {
-        name: "Quelm Resilient ReAct Agent",
-        framework: "Quelm Native",
+        name: "Melq Resilient ReAct Agent",
+        framework: "Melq Native",
         modelName: "gemini-2.0-flash",
         type: "INTERNAL_REACT",
         description: "Hardened ReAct agent with exponential backoff on 500/429 tool errors and prompt injection filtering.",

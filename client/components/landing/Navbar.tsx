@@ -15,7 +15,7 @@ const Navbar = () => {
           <span className="rounded-full bg-[#D9541E] px-2 py-0.5 text-[10px] font-semibold tracking-wide uppercase text-white">
             Live
           </span>
-          <span>Announcing Quelm Benchmarks: Independent evaluation & chaos-testing for AI agents</span>
+          <span>Announcing Melq Benchmarks: Independent evaluation & chaos-testing for AI agents</span>
           <ArrowRight className="h-3 w-3" />
         </Link>
       </div>
@@ -26,10 +26,10 @@ const Navbar = () => {
           {/* Brand */}
           <Link href="/" className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#111111] text-[#F3EEE3] font-bold text-base shadow-xs">
-              Q
+              M
             </div>
             <span className="text-xl font-bold tracking-tight text-[#111111]">
-              quelm
+              melq
             </span>
           </Link>
 

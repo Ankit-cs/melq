@@ -42,9 +42,9 @@ describe("LoginPage", () => {
 
   // --- Rendering ---
 
-  it("renders the Quelm branding", () => {
+  it("renders the Melq branding", () => {
     render(<LoginPage />);
-    expect(screen.getByText("Quelm")).toBeInTheDocument();
+    expect(screen.getByText("Melq")).toBeInTheDocument();
   });
 
   it("renders the Welcome back heading", () => {

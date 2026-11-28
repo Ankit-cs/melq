@@ -1,9 +1,9 @@
-![Quelm Banner](./preview.png)
+![Melq Banner](./preview.png)
 
-# Quelm
+# Melq
 
 > **Framework-Independent AI Agent Benchmarking, Chaos-Testing & Execution Platform**  
-> *Built for Global AI Hackathon — Problem Statement 02: "Build a Benchmarking Platform for AI Agents, Not Just Models"*
+> *Evaluate, stress-test, and compare autonomous AI agents across models, frameworks, and controlled failure conditions.*
 
 [![GitHub Repository](https://img.shields.io/badge/GitHub-Ankit--cs%2Fmelq-111111?style=flat&logo=github)](https://github.com/Ankit-cs/melq)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
@@ -47,7 +47,7 @@ Two agents utilizing the exact same underlying LLM (e.g. Gemini 2.0 Flash or GPT
 - One agent may complete a complex multi-step task in **3 tool calls, 400 tokens, and 2 seconds**.
 - Another agent using the same model may burn **8,000 tokens in an infinite loop, hallucinate fake citations, and crash when an external tool returns an HTTP 500 error**.
 
-**Quelm is a framework-independent benchmarking and chaos-testing platform** that evaluates entire AI agents across identical standardized tasks under normal and simulated failure conditions.
+**Melq is a framework-independent benchmarking and chaos-testing platform** that evaluates entire AI agents across identical standardized tasks under normal and simulated failure conditions.
 
 ---
 
@@ -68,11 +68,11 @@ Two agents utilizing the exact same underlying LLM (e.g. Gemini 2.0 Flash or GPT
 
 ```mermaid
 flowchart TB
-    subgraph Client["Next.js 16 Frontend (Warm Editorial Design)"]
-        BA["Benchmark Arena\n/benchmark"]
-        CD["Trace Diff & Matrix\n/benchmark/:id"]
-        LB["Agent Leaderboard\n/leaderboard"]
-        WB["Workflow Builder\n/builder/:id"]
+    subgraph Client["Next.js 16 Frontend"]
+        BA["Benchmark Arena<br/>/benchmark"]
+        CD["Trace Diff & Matrix<br/>/benchmark/:id"]
+        LB["Agent Leaderboard<br/>/leaderboard"]
+        WB["Workflow Builder<br/>/builder/:id"]
     end
 
     subgraph API["Express REST API (Port 8000)"]
@@ -82,22 +82,22 @@ flowchart TB
     end
 
     subgraph BenchmarkSystem["Benchmark Engine"]
-        Runner["Benchmark Runner\n(1x-5x Repeated Runs)"]
-        Chaos["Chaos Injection Engine\n500s · 429s · Misleading Context"]
-        MockTools["Deterministic Sandboxed Tools\nSearch · DB · Math · API"]
-        Judge["Automated Evaluator\nRule Checks + LLM-as-a-Judge"]
+        Runner["Benchmark Runner<br/>1x-5x Repeated Runs"]
+        Chaos["Chaos Injection Engine<br/>500s, 429s, Misleading Context"]
+        MockTools["Deterministic Sandboxed Tools<br/>Search, DB, Math, API"]
+        Judge["Automated Evaluator<br/>Rule Checks + LLM-as-a-Judge"]
     end
 
-    subgraph AgentRuntime["Framework-Independent Agent Abstraction"]
-        ReactAgent["Resilient ReAct Agent\n(Gemini 2.0 Flash)"]
-        NaiveAgent["Naive Baseline Agent\n(Direct LLM)"]
-        PipeAgent["Decomposed Pipeline Agent\n(Planner + Executor)"]
-        WebhookAgent["External Webhook Agent\n(LangChain / CrewAI / AutoGen)"]
+    subgraph AgentRuntime["Agent Abstraction Layer"]
+        ReactAgent["Resilient ReAct Agent<br/>Gemini 2.0 Flash"]
+        NaiveAgent["Naive Baseline Agent<br/>Direct LLM"]
+        PipeAgent["Decomposed Pipeline Agent<br/>Planner + Executor"]
+        WebhookAgent["External Webhook Agent<br/>LangChain, CrewAI, AutoGen"]
     end
 
     subgraph Data["Persistence & Queues"]
-        PG[("PostgreSQL 16\nBenchmark & Execution Traces")]
-        RD[("Redis 7\nBullMQ Queues")]
+        PG[("PostgreSQL 16<br/>Benchmark & Execution Traces")]
+        RD[("Redis 7<br/>BullMQ Queues")]
     end
 
     Client --> API
@@ -113,7 +113,7 @@ flowchart TB
 
 ## Framework-Independent Benchmarking
 
-Quelm supports any agent framework out of the box through a standardized JSON execution protocol:
+Melq supports any agent framework out of the box through a standardized JSON execution protocol:
 
 ### Reference In-Memory Agents:
 1. **Resilient ReAct Agent (`ResilientReactAgent`)**:
@@ -124,7 +124,7 @@ Quelm supports any agent framework out of the box through a standardized JSON ex
    Three-stage planner, executor, and synthesizer.
 
 ### External Agents (LangChain, CrewAI, AutoGen, Custom):
-Register any external agent webhook in the Leaderboard. Quelm dispatches the standardized payload:
+Register any external agent webhook in the Leaderboard. Melq dispatches the standardized payload:
 
 ```json
 POST /your-agent-endpoint
@@ -155,7 +155,7 @@ Your agent simply returns its execution summary:
 
 ## Chaos Injection & Failure Testing
 
-Agents in production encounter unexpected failures. Quelm includes a native **Chaos Engine** to stress-test agent behavior:
+Agents in production encounter unexpected failures. Melq includes a native **Chaos Engine** to stress-test agent behavior:
 
 | Chaos Scenario | Simulated Event | Expected Resilient Behavior |
 |---|---|---|
@@ -169,7 +169,7 @@ Agents in production encounter unexpected failures. Quelm includes a native **Ch
 
 Single-run evaluations are unreliable because LLM temperature introduces randomness.
 
-Quelm executes benchmarks across **1x to 5x iterations**:
+Melq executes benchmarks across **1x to 5x iterations**:
 - **Success Rate (`%`)**: Percentage of iterations where the task succeeded.
 - **Resilience Score (`%`)**: Ratio of injected chaos scenarios recovered from cleanly.
 - **Mean Score (`0-100`)**: Combined score across factual completeness, efficiency, and LLM Judge evaluation.
@@ -222,7 +222,7 @@ The `/benchmark/[id]` comparison view allows developers to diff agent runs side-
 ## Project Structure
 
 ```text
-quelm/
+melq/
 ├── client/                     # Next.js 16 Web Application
 │   ├── app/
 │   │   ├── (dashboard)/
@@ -269,7 +269,7 @@ quelm/
 
 ```bash
 git clone https://github.com/Ankit-cs/melq.git
-cd melq/quelm
+cd melq
 ```
 
 ---
@@ -283,7 +283,7 @@ NODE_ENV=development
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/agent_platform?schema=public"
 REDIS_HOST=localhost
 REDIS_PORT=6379
-JWT_SECRET=super_secret_jwt_key_min_32_characters_long_quelm
+JWT_SECRET=super_secret_jwt_key_min_32_characters_long_melq
 GEMINI_API_KEY=your_gemini_api_key_here
 CLIENT_URL=http://localhost:3000
 ```
@@ -352,7 +352,7 @@ Open [http://localhost:3000/benchmark](http://localhost:3000/benchmark) in your 
 
 ## Design System & Palette
 
-Quelm features an editorial, typographic aesthetic:
+Melq features an editorial, typographic aesthetic:
 
 | Role | Color | Hex |
 |---|---|---|
@@ -366,4 +366,4 @@ Quelm features an editorial, typographic aesthetic:
 
 ## License
 
-MIT © [Ankit](https://github.com/Ankit-cs) — Built for the Global AI Hackathon.
+MIT © [Ankit](https://github.com/Ankit-cs)

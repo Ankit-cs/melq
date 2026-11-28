@@ -15,7 +15,7 @@ const Architecture = () => {
           </h2>
 
           <p className="mt-6 text-lg leading-relaxed text-[#554E46]">
-            Under the hood, Quelm orchestrates distributed task execution through Redis
+            Under the hood, Melq orchestrates distributed task execution through Redis
             queues, BullMQ workers, event-driven orchestration, PostgreSQL persistence,
             and real-time observability streams.
           </p>

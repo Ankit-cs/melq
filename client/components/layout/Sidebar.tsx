@@ -16,7 +16,7 @@ const Sidebar = () => {
       <div className="flex h-16 items-center border-b border-sidebar-border px-6 gap-3">
         <Icon size={34} />
         <div>
-          <h1 className="text-lg font-semibold tracking-tight text-foreground">Quelm</h1>
+          <h1 className="text-lg font-semibold tracking-tight text-foreground">Melq</h1>
           <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">Workflows</p>
         </div>
       </div>

@@ -144,8 +144,8 @@ model BenchmarkTask {
 
 model BenchmarkAgentProfile {
   id          String   @id @default(cuid())
-  name        String   // e.g. "LangChain ReAct Agent", "CrewAI Multi-Role", "Quelm Resilient Agent"
-  framework   String   // "LangChain", "CrewAI", "AutoGen", "Quelm", "CustomHTTP"
+  name        String   // e.g. "LangChain ReAct Agent", "CrewAI Multi-Role", "Melq Resilient Agent"
+  framework   String   // "LangChain", "CrewAI", "AutoGen", "Melq", "CustomHTTP"
   modelName   String   // "gemini-2.0-flash", "gemini-1.5-flash", etc.
   description String?
   endpointUrl String?  // Optional webhook URL if external agent

@@ -42,9 +42,9 @@ describe("RegisterPage", () => {
 
   // --- Rendering ---
 
-  it("renders the Quelm branding", () => {
+  it("renders the Melq branding", () => {
     render(<RegisterPage />);
-    expect(screen.getByText("Quelm")).toBeInTheDocument();
+    expect(screen.getByText("Melq")).toBeInTheDocument();
   });
 
   it("renders the Create an account heading", () => {

@@ -163,7 +163,7 @@ export default function BenchmarkDashboardPage() {
             </span>
           </div>
           <p className="mt-3 text-3xl font-bold text-foreground">{agents.length}</p>
-          <p className="mt-1 text-xs text-muted-foreground">LangChain, CrewAI, Quelm, Webhooks</p>
+          <p className="mt-1 text-xs text-muted-foreground">LangChain, CrewAI, Melq, Webhooks</p>
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-5 shadow-xs">
