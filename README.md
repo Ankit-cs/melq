@@ -73,13 +73,13 @@ Two agents utilizing the exact same underlying LLM (e.g. Gemini 2.0 Flash or GPT
 graph TD
     UI["Frontend Client (Next.js 16)"] --> API["REST API Engine (Express / Node.js)"]
     API --> RUNNER["Benchmark Orchestrator (1x-5x Repeated Runs)"]
-    API --> DB[("PostgreSQL 16 (Traces & Metrics)")]
-    API --> QUEUE[("Redis 7 (BullMQ Queues)")]
+    API --> DB["PostgreSQL 16 (Traces and Metrics)"]
+    API --> QUEUE["Redis 7 (BullMQ Queues)"]
 
     RUNNER --> AGENTS["Agent Runtime (ReAct, Naive, Pipeline, Webhooks)"]
     RUNNER --> CHAOS["Chaos Injection Engine (500s, 429s, Misleading Context)"]
     RUNNER --> TOOLS["Deterministic Sandbox Tools (Search, DB, Math, API)"]
-    RUNNER --> JUDGE["Automated Evaluator (Rule Engine + LLM Judge)"]
+    RUNNER --> JUDGE["Automated Evaluator (Rule Engine and LLM Judge)"]
 ```
 
 ```text

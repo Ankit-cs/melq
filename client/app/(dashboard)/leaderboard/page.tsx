@@ -87,15 +87,15 @@ export default function LeaderboardPage() {
               Global Agent Rankings
             </span>
           </div>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             AI Agent Resilience Leaderboard
           </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
             Ranked objectively on task completion, chaos failure survival, cost efficiency, and reasoning speed across repeated trials.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <button
             onClick={loadLeaderboard}
             className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 text-xs font-semibold text-foreground hover:bg-accent"

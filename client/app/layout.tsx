@@ -4,7 +4,6 @@ import { QueryProvider } from "@/providers/query-provider";
 import { AuthProvider } from "@/providers/auth-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Inter, Geist_Mono, Playfair_Display } from "next/font/google";
-import UnsupportedScreen from "@/components/ui/UnsupportedScreen";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -37,19 +36,13 @@ export default function RootLayout({
       className={`${inter.variable} ${mono.variable} ${serif.variable} antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen">
-        <div id="app-root">
-          <QueryProvider>
-            <AuthProvider>
-              {children}
-              <Toaster richColors position="top-right" />
-            </AuthProvider>
-          </QueryProvider>
-        </div>
-
-        <div id="unsupported-root">
-          <UnsupportedScreen />
-        </div>
+      <body className="min-h-screen bg-background text-foreground antialiased selection:bg-[#D9541E] selection:text-white">
+        <QueryProvider>
+          <AuthProvider>
+            {children}
+            <Toaster richColors position="top-right" />
+          </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );

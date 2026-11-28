@@ -1,9 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 
 const Navbar = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <>
       {/* Top Announcement Bar from the screenshot */}
@@ -15,14 +18,16 @@ const Navbar = () => {
           <span className="rounded-full bg-[#D9541E] px-2 py-0.5 text-[10px] font-semibold tracking-wide uppercase text-white">
             Live
           </span>
-          <span>Announcing Melq Benchmarks: Independent evaluation & chaos-testing for AI agents</span>
-          <ArrowRight className="h-3 w-3" />
+          <span className="line-clamp-1 sm:line-clamp-none">
+            Announcing Melq Benchmarks: Independent evaluation & chaos-testing for AI agents
+          </span>
+          <ArrowRight className="h-3 w-3 shrink-0" />
         </Link>
       </div>
 
       {/* Main Navigation */}
       <header className="sticky top-0 z-50 border-b border-[#111111]/10 bg-[#F3EEE3]/90 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
           {/* Brand */}
           <Link href="/" className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#111111] text-[#F3EEE3] font-bold text-base shadow-xs">
@@ -33,7 +38,7 @@ const Navbar = () => {
             </span>
           </Link>
 
-          {/* Nav links */}
+          {/* Desktop Nav links */}
           <nav className="hidden items-center gap-7 md:flex">
             <Link
               href="/benchmark"
@@ -69,22 +74,90 @@ const Navbar = () => {
           </nav>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <Link
               href="/auth/login"
-              className="text-sm font-semibold text-[#111111] transition-opacity hover:opacity-70 px-2 py-1"
+              className="hidden sm:inline-block text-sm font-semibold text-[#111111] transition-opacity hover:opacity-70 px-2 py-1"
             >
               Log in
             </Link>
 
             <Link
               href="/auth/register"
-              className="inline-flex items-center justify-center rounded-full bg-[#111111] px-5 py-2.5 text-sm font-medium text-[#F3EEE3] shadow-sm transition-all duration-200 hover:scale-[1.02] hover:bg-[#252525] active:scale-[0.98]"
+              className="inline-flex items-center justify-center rounded-full bg-[#111111] px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-[#F3EEE3] shadow-sm transition-all duration-200 hover:scale-[1.02] hover:bg-[#252525] active:scale-[0.98]"
             >
               Get early access
             </Link>
+
+            {/* Mobile Hamburger Button */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#111111]/15 text-[#111111] md:hidden hover:bg-[#FAF7F2]"
+              aria-label="Toggle Navigation Menu"
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Slide-Down Menu */}
+        {mobileMenuOpen && (
+          <div className="border-b border-[#111111]/10 bg-[#FAF7F2] px-6 py-5 md:hidden animate-fade-in shadow-xl">
+            <div className="flex flex-col gap-3">
+              <Link
+                href="/benchmark"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between rounded-xl bg-[#D9541E]/10 p-3 text-sm font-semibold text-[#D9541E]"
+              >
+                <span>Benchmark Arena</span>
+                <span className="rounded-full bg-[#D9541E] px-2 py-0.5 text-[10px] text-white">Live</span>
+              </Link>
+
+              <Link
+                href="/leaderboard"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-xl p-3 text-sm font-medium text-[#111111] hover:bg-[#EBE3D4]"
+              >
+                Leaderboard
+              </Link>
+
+              <Link
+                href="/workflows"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-xl p-3 text-sm font-medium text-[#111111] hover:bg-[#EBE3D4]"
+              >
+                Workflows
+              </Link>
+
+              <a
+                href="#features"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-xl p-3 text-sm font-medium text-[#111111] hover:bg-[#EBE3D4]"
+              >
+                Chaos Testing
+              </a>
+
+              <a
+                href="#architecture"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-xl p-3 text-sm font-medium text-[#111111] hover:bg-[#EBE3D4]"
+              >
+                Architecture
+              </a>
+
+              <div className="mt-2 border-t border-[#111111]/10 pt-3">
+                <Link
+                  href="/auth/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-center rounded-xl border border-[#111111]/15 p-2.5 text-sm font-semibold text-[#111111]"
+                >
+                  Log in
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       </header>
     </>
   );

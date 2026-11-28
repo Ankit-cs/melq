@@ -8,39 +8,39 @@ const Hero = () => {
   const [demoOpen, setDemoOpen] = useState(false);
 
   return (
-    <section className="relative px-6 pt-16 pb-12 overflow-hidden">
+    <section className="relative px-4 sm:px-6 pt-10 sm:pt-16 pb-12 overflow-hidden">
       <div className="mx-auto max-w-7xl">
         {/* Main Split Grid */}
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
           {/* Left Column: Copy & CTAs */}
           <div className="flex flex-col items-start text-left">
             <Link
               href="/benchmark"
-              className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#D9541E]/30 bg-[#FAF7F2] px-3.5 py-1 text-xs font-medium text-[#111111] shadow-xs transition-colors hover:border-[#D9541E]/60"
+              className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#D9541E]/30 bg-[#FAF7F2] px-3.5 py-1 text-xs font-medium text-[#111111] shadow-xs transition-colors hover:border-[#D9541E]/60 max-w-full"
             >
-              <span className="flex h-2 w-2 rounded-full bg-[#D9541E] animate-pulse" />
+              <span className="flex h-2 w-2 rounded-full bg-[#D9541E] animate-pulse shrink-0" />
               <span className="font-semibold text-[#D9541E]">AI Agent Arena</span>
               <span className="text-[#6B6358]">|</span>
-              <span className="text-[#554E46]">Benchmark & Chaos Test LangChain, CrewAI & Custom Agents</span>
-              <ArrowRight className="h-3 w-3 text-[#D9541E]" />
+              <span className="text-[#554E46] truncate">Benchmark & Chaos Test Agents</span>
+              <ArrowRight className="h-3 w-3 text-[#D9541E] shrink-0" />
             </Link>
 
-            <h1 className="text-5xl font-bold tracking-tight text-[#111111] sm:text-6xl md:text-7xl leading-[1.06]">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#111111] leading-[1.08]">
               The AI teammate <br />
               <span className="font-serif italic font-normal tracking-normal text-[#111111]">
                 that never sleeps.
               </span>
             </h1>
 
-            <p className="mt-8 max-w-xl text-lg leading-relaxed text-[#554E46]">
+            <p className="mt-6 sm:mt-8 max-w-xl text-base sm:text-lg leading-relaxed text-[#554E46]">
               Melq benchmarks and runs autonomous AI agents with repeatable chaos testing — measuring task success, token cost, tool reliability, and execution traces across any framework.
             </p>
 
             {/* CTAs */}
-            <div className="mt-10 flex flex-wrap items-center gap-4">
+            <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-3 sm:gap-4">
               <Link
                 href="/benchmark"
-                className="inline-flex items-center gap-2.5 rounded-full bg-[#D9541E] px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-[#D9541E]/30 transition-all duration-300 hover:scale-[1.02] hover:bg-[#C24716] active:scale-[0.98]"
+                className="inline-flex items-center gap-2.5 rounded-full bg-[#D9541E] px-6 sm:px-7 py-3 sm:py-3.5 text-xs sm:text-sm font-semibold text-white shadow-xl shadow-[#D9541E]/30 transition-all duration-300 hover:scale-[1.02] hover:bg-[#C24716] active:scale-[0.98]"
               >
                 Launch Benchmarks
                 <ArrowRight className="h-4 w-4" />
@@ -49,12 +49,12 @@ const Hero = () => {
               <button
                 type="button"
                 onClick={() => setDemoOpen(true)}
-                className="inline-flex items-center gap-2.5 rounded-full border border-[#111111]/15 bg-[#FAF7F2] px-6 py-3.5 text-sm font-medium text-[#111111] shadow-xs transition-all duration-300 hover:bg-[#EBE3D4] active:scale-[0.98]"
+                className="inline-flex items-center gap-2.5 rounded-full border border-[#111111]/15 bg-[#FAF7F2] px-5 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-medium text-[#111111] shadow-xs transition-all duration-300 hover:bg-[#EBE3D4] active:scale-[0.98]"
               >
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#111111] text-white">
                   <Play className="h-2.5 w-2.5 fill-white ml-0.5" />
                 </span>
-                Watch the 2 min demo
+                Watch 2 min demo
               </button>
             </div>
 
@@ -98,8 +98,8 @@ const Hero = () => {
           {/* Right Column: Screenshot-Inspired Frame with Live Widgets */}
           <div className="relative">
             {/* Burnt Orange outer container & border accent */}
-            <div className="relative overflow-hidden rounded-[36px] bg-[#D9541E] p-2.5 shadow-2xl shadow-[#111111]/15">
-              <div className="relative min-h-[480px] w-full overflow-hidden rounded-[28px] bg-[#111111]">
+            <div className="relative overflow-hidden rounded-[28px] sm:rounded-[36px] bg-[#D9541E] p-2 sm:p-2.5 shadow-2xl shadow-[#111111]/15">
+              <div className="relative min-h-[400px] sm:min-h-[480px] w-full overflow-hidden rounded-[22px] sm:rounded-[28px] bg-[#111111]">
                 {/* Editorial Photo */}
                 <img
                   src="/kanpur.jpg"
@@ -111,34 +111,34 @@ const Hero = () => {
                 <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-black/40" />
 
                 {/* Top Left Badge: Built in Kanpur */}
-                <div className="absolute left-5 top-5 z-20 flex items-center gap-1.5 rounded-full border border-white/20 bg-black/45 px-3.5 py-1.5 text-xs font-medium text-white shadow-md backdrop-blur-md">
+                <div className="absolute left-3 sm:left-5 top-3 sm:top-5 z-20 flex items-center gap-1.5 rounded-full border border-white/20 bg-black/45 px-3 sm:px-3.5 py-1 sm:py-1.5 text-[11px] sm:text-xs font-medium text-white shadow-md backdrop-blur-md">
                   <span>📍</span>
                   <span>Built in Kanpur</span>
                 </div>
 
                 {/* Top Right Floating Card: Time saved this week */}
-                <div className="absolute right-5 top-5 z-20 rounded-2xl border border-black/5 bg-[#FAF7F2]/95 p-4 shadow-xl backdrop-blur-md text-[#111111] w-42">
-                  <p className="text-[11px] font-medium text-[#6B6358]">
+                <div className="absolute right-3 sm:right-5 top-3 sm:top-5 z-20 rounded-2xl border border-black/5 bg-[#FAF7F2]/95 p-3 sm:p-4 shadow-xl backdrop-blur-md text-[#111111] w-36 sm:w-42">
+                  <p className="text-[10px] sm:text-[11px] font-medium text-[#6B6358]">
                     Time saved this week
                   </p>
 
                   <div className="mt-1 flex items-baseline gap-1">
-                    <span className="text-3xl font-extrabold tracking-tight">11.5</span>
+                    <span className="text-2xl sm:text-3xl font-extrabold tracking-tight">11.5</span>
                     <span className="text-xs font-medium text-[#6B6358]">hrs</span>
                   </div>
 
                   {/* Mini bar graph */}
-                  <div className="mt-3 flex items-end gap-1.5 h-6">
-                    <div className="w-3 h-3 bg-[#E0D7C6] rounded-xs" />
-                    <div className="w-3 h-4 bg-[#E0D7C6] rounded-xs" />
-                    <div className="w-3 h-3.5 bg-[#E0D7C6] rounded-xs" />
-                    <div className="w-3 h-6 bg-[#D9541E] rounded-xs" />
-                    <div className="w-3 h-5 bg-[#111111] rounded-xs" />
+                  <div className="mt-2.5 sm:mt-3 flex items-end gap-1.5 h-5 sm:h-6">
+                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-[#E0D7C6] rounded-xs" />
+                    <div className="w-2.5 sm:w-3 h-3.5 sm:h-4 bg-[#E0D7C6] rounded-xs" />
+                    <div className="w-2.5 sm:w-3 h-3 sm:h-3.5 bg-[#E0D7C6] rounded-xs" />
+                    <div className="w-2.5 sm:w-3 h-5 sm:h-6 bg-[#D9541E] rounded-xs" />
+                    <div className="w-2.5 sm:w-3 h-4 sm:h-5 bg-[#111111] rounded-xs" />
                   </div>
                 </div>
 
                 {/* Bottom Floating Card: While you slept */}
-                <div className="absolute bottom-5 left-5 right-5 z-20 rounded-2xl border border-black/5 bg-[#FAF7F2]/95 p-4.5 shadow-2xl backdrop-blur-md text-[#111111]">
+                <div className="absolute bottom-3 sm:bottom-5 left-3 sm:left-5 right-3 sm:right-5 z-20 rounded-2xl border border-black/5 bg-[#FAF7F2]/95 p-3.5 sm:p-4.5 shadow-2xl backdrop-blur-md text-[#111111]">
                   <div className="flex items-center justify-between border-b border-[#111111]/10 pb-2.5">
                     <div className="flex items-center gap-2">
                       <span className="h-2 w-2 rounded-full bg-[#D9541E] animate-pulse" />
