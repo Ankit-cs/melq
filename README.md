@@ -5,6 +5,7 @@
 > **Framework-Independent AI Agent Benchmarking, Chaos-Testing & Execution Platform**  
 > *Evaluate, stress-test, and compare autonomous AI agents across models, frameworks, and controlled failure conditions.*
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-melqv1.vercel.app-D9541E?style=flat&logo=vercel)](https://melqv1.vercel.app)
 [![GitHub Repository](https://img.shields.io/badge/GitHub-Ankit--cs%2Fmelq-111111?style=flat&logo=github)](https://github.com/Ankit-cs/melq)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-16%20(React%2019)-black?style=flat&logo=next.js)](https://nextjs.org/)
@@ -13,6 +14,8 @@
 [![Prisma](https://img.shields.io/badge/Prisma-PostgreSQL-teal?style=flat&logo=prisma)](https://www.prisma.io/)
 [![Redis](https://img.shields.io/badge/Redis-BullMQ%20Queue-red?style=flat&logo=redis)](https://redis.io/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=flat&logo=tailwindcss)](https://tailwindcss.com/)
+
+> 🌐 **Live URL:** [https://melqv1.vercel.app](https://melqv1.vercel.app)
 
 ---
 
@@ -67,46 +70,41 @@ Two agents utilizing the exact same underlying LLM (e.g. Gemini 2.0 Flash or GPT
 ## System Architecture
 
 ```mermaid
-flowchart TB
-    subgraph Client["Next.js 16 Frontend"]
-        BA["Benchmark Arena<br/>/benchmark"]
-        CD["Trace Diff & Matrix<br/>/benchmark/:id"]
-        LB["Agent Leaderboard<br/>/leaderboard"]
-        WB["Workflow Builder<br/>/builder/:id"]
-    end
+graph TD
+    UI["Frontend Client (Next.js 16)"] --> API["REST API Engine (Express / Node.js)"]
+    API --> RUNNER["Benchmark Orchestrator (1x-5x Repeated Runs)"]
+    API --> DB[("PostgreSQL 16 (Traces & Metrics)")]
+    API --> QUEUE[("Redis 7 (BullMQ Queues)")]
 
-    subgraph API["Express REST API (Port 8000)"]
-        BR["/api/benchmark/*"]
-        WF["/api/workflows"]
-        RN["/api/runs"]
-    end
+    RUNNER --> AGENTS["Agent Runtime (ReAct, Naive, Pipeline, Webhooks)"]
+    RUNNER --> CHAOS["Chaos Injection Engine (500s, 429s, Misleading Context)"]
+    RUNNER --> TOOLS["Deterministic Sandbox Tools (Search, DB, Math, API)"]
+    RUNNER --> JUDGE["Automated Evaluator (Rule Engine + LLM Judge)"]
+```
 
-    subgraph BenchmarkSystem["Benchmark Engine"]
-        Runner["Benchmark Runner<br/>1x-5x Repeated Runs"]
-        Chaos["Chaos Injection Engine<br/>500s, 429s, Misleading Context"]
-        MockTools["Deterministic Sandboxed Tools<br/>Search, DB, Math, API"]
-        Judge["Automated Evaluator<br/>Rule Checks + LLM-as-a-Judge"]
-    end
-
-    subgraph AgentRuntime["Agent Abstraction Layer"]
-        ReactAgent["Resilient ReAct Agent<br/>Gemini 2.0 Flash"]
-        NaiveAgent["Naive Baseline Agent<br/>Direct LLM"]
-        PipeAgent["Decomposed Pipeline Agent<br/>Planner + Executor"]
-        WebhookAgent["External Webhook Agent<br/>LangChain, CrewAI, AutoGen"]
-    end
-
-    subgraph Data["Persistence & Queues"]
-        PG[("PostgreSQL 16<br/>Benchmark & Execution Traces")]
-        RD[("Redis 7<br/>BullMQ Queues")]
-    end
-
-    Client --> API
-    API --> BenchmarkSystem
-    BenchmarkSystem --> AgentRuntime
-    BenchmarkSystem --> Chaos
-    BenchmarkSystem --> MockTools
-    BenchmarkSystem --> Judge
-    API --> Data
+```text
+┌─────────────────────────────────────────────────────────────────────────┐
+│                      Next.js 16 Frontend (App Router)                   │
+│   /benchmark (Arena)  •  /benchmark/:id (Diff)  •  /leaderboard (Ranks) │
+└────────────────────────────────────┬────────────────────────────────────┘
+                                     │ HTTP / REST
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                     Express Backend Engine (Port 8000)                  │
+│       /api/benchmark/*   •   /api/workflows   •   /api/runs             │
+└──────┬─────────────────────────────┬─────────────────────────────┬──────┘
+       │                             │                             │
+       ▼                             ▼                             ▼
+┌──────────────┐             ┌──────────────┐             ┌──────────────┐
+│  Benchmark   │             │ Chaos Engine │             │  Evaluator   │
+│ Orchestrator │◄───────────►│ (500/429/Trap)│            │(LLM-as-a-Judge)
+└──────┬───────┘             └──────────────┘             └──────────────┘
+       │
+       ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                   Framework-Independent Agent Runtime                   │
+│  Resilient ReAct  •  Naive Baseline  •  Pipeline  •  External Webhooks  │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
